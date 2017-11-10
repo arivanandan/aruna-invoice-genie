@@ -20,7 +20,7 @@ export function textbox(input, row) {
 }
 
 export function radio(input, row) {
-  const name = input.target.name.startsWith("gst") ? "gst" : input.target.name
+  const name = input.target.name
   const value = input.target.value
   updateState('input', input => (
     {
@@ -59,6 +59,16 @@ export function setCustomerAddress(input) {
 
 export function setActive(row) {
   updateState('currentActive', currentActive => row)
+}
+
+export function newProduct(row) {
+  updateState('input', input => ({
+    ...input,
+    rows: Object.assign(
+      [...input.rows],
+      { [row]: { ...input.rows[row], pid: "" } }
+    )
+  }))
 }
 
 export function addRow() {

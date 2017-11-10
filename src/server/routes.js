@@ -67,9 +67,9 @@ export async function createInvoice(req, res) {
     )
 
   try {
-    const customer = !input.addressee
+    const customer = input.customer.cname === '' && input.customer.cgstid === ''
       ? { cid: null }
-      : input.customer.cid !== ""
+      : input.customer.cid !== ''
         ? input.customer
         : await customerInsert(input.customer)
     console.log('Customer Data -> ', customer)

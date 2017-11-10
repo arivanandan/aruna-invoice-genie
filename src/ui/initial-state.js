@@ -4,7 +4,6 @@ export default {
   refinedProductMatches: [],
   currentActive: "",
   input: {
-    addressee: false,
     igst: false,
     customer: {
       cid: "",

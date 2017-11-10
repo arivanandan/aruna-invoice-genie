@@ -13,9 +13,10 @@ class Create extends Component {
 
   componentWillUpdate() {}
 
-  findProduct(row) {
+  findProduct(row, pid) {
     return function(e) {
       trackInput.setActive(row);
+      if (pid) trackInput.newProduct(row);
       if (e.target.value.length === 2) product.findMatch(e.target.value);
       else if (e.target.value.length > 2) product.refineMatches(e.target.value);
       trackInput.textbox(e, row);
@@ -45,14 +46,6 @@ class Create extends Component {
         <div>
           <input
             type="checkbox"
-            value="Addressee"
-            placeholder="Product"
-            checked={this.props.input.addressee}
-            onChange={trackInput.checkbox}
-          />
-          Addressee
-          <input
-            type="checkbox"
             value="IGST"
             placeholder="Product"
             checked={this.props.input.igst}
@@ -60,35 +53,33 @@ class Create extends Component {
           />
           IGST
         </div>
-        {this.props.input.addressee && (
-          <div className="inputAddress">
-            <div className="nameId">
-              <input
-                type="text"
-                name="cname"
-                placeholder="Customer Name"
-                value={this.props.input.cname}
-                onChange={trackInput.setCustomerAddress}
-              />
-              <input
-                type="text"
-                name="cgstid"
-                placeholder="Customer GSTID"
-                value={this.props.input.cgstid}
-                onChange={trackInput.setCustomerAddress}
-              />
-            </div>
-            <div className="address">
-              <input
-                type="text"
-                name="caddress"
-                placeholder="Customer Address"
-                value={this.props.input.caddress}
-                onChange={trackInput.setCustomerAddress}
-              />
-            </div>
+        <div className="customerAddress">
+          <div className="nameId">
+            <input
+              type="text"
+              name="cname"
+              placeholder="Customer Name"
+              value={this.props.input.cname}
+              onChange={trackInput.setCustomerAddress}
+            />
+            <input
+              type="text"
+              name="cgstid"
+              placeholder="Customer GSTID"
+              value={this.props.input.cgstid}
+              onChange={trackInput.setCustomerAddress}
+            />
           </div>
-        )}
+          <div className="address">
+            <input
+              type="text"
+              name="caddress"
+              placeholder="Customer Address"
+              value={this.props.input.caddress}
+              onChange={trackInput.setCustomerAddress}
+            />
+          </div>
+        </div>
         <div className="createToolkit">
           <div>
             <input
@@ -109,19 +100,11 @@ class Create extends Component {
         </div>
         {
           <div className="inputHeaders">
-            <div className="textHeaders">
-              <div>Product Name</div>
-              <div>MRP</div>
-              <div>Selling Price</div>
-              <div>Quantity</div>
-            </div>
-            <div className="radioHeaders">
-              <div>0%</div>
-              <div>5%</div>
-              <div>12%</div>
-              <div>18%</div>
-              <div>28%</div>
-            </div>
+            <div>Product Name</div>
+            <div>MRP</div>
+            <div>Selling Price</div>
+            <div>Quantity</div>
+            <div>GST</div>
           </div>
         }
         {[...Array(this.props.input.rows.length).keys()].map(row => (
@@ -133,7 +116,7 @@ class Create extends Component {
                 data-row={row}
                 placeholder="Product"
                 value={this.props.input.rows[row].name}
-                onChange={this.findProduct(row)}
+                onChange={this.findProduct(row, this.props.input.rows[row].pid)}
               />
               <input
                 type="text"
@@ -141,6 +124,7 @@ class Create extends Component {
                 data-row={row}
                 placeholder="MRP"
                 value={this.props.input.rows[row].mrp}
+                disabled={this.props.input.rows[row].pid === "" ? false : true}
                 onChange={this.trackInput(row, "textbox")}
               />
               <input
@@ -160,44 +144,13 @@ class Create extends Component {
                 onChange={this.trackInput(row, "textbox")}
               />
               <input
-                name={`gst_${row}`}
-                type="radio"
-                value="0"
+                type="text"
+                name="gst"
                 data-row={row}
-                checked={this.props.input.rows[row].gst === "0"}
-                onChange={this.trackInput(row, "radio")}
-              />
-              <input
-                name={`gst_${row}`}
-                type="radio"
-                value="5"
-                data-row={row}
-                checked={this.props.input.rows[row].gst === "5"}
-                onChange={this.trackInput(row, "radio")}
-              />
-              <input
-                name={`gst_${row}`}
-                type="radio"
-                value="12"
-                data-row={row}
-                checked={this.props.input.rows[row].gst === "12"}
-                onChange={this.trackInput(row, "radio")}
-              />
-              <input
-                name={`gst_${row}`}
-                type="radio"
-                value="18"
-                data-row={row}
-                checked={this.props.input.rows[row].gst === "18"}
-                onChange={this.trackInput(row, "radio")}
-              />
-              <input
-                name={`gstPercent_${row}`}
-                type="radio"
-                value="28"
-                data-row={row}
-                checked={this.props.input.rows[row].gst === "28"}
-                onChange={this.trackInput(row, "radio")}
+                placeholder="GST"
+                value={this.props.input.rows[row].gst}
+                disabled={this.props.input.rows[row].pid === "" ? false : true}
+                onChange={this.trackInput(row, "textbox")}
               />
             </div>
             <div>

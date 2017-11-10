@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "author": "Arivanandan",
   "scripts": {
+    "start": "npm run bs",
     "serve": "node dist/src/server",
-    "start": "webpack-dev-server",
+    "dev": "webpack-dev-server",
     "lint": "eslint src",
     "prebuild": "rimraf dist",
     "build": "webpack -p --config webpack.config.production.js",

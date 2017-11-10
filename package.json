@@ -1,0 +1,53 @@
+{
+  "name": "aruna-invoice-genie",
+  "version": "0.0.1",
+  "author": "Arivanandan",
+  "scripts": {
+    "serve": "node dist/src/server",
+    "start": "webpack-dev-server",
+    "lint": "eslint src",
+    "prebuild": "rimraf dist",
+    "build": "webpack -p --config webpack.config.production.js",
+    "buildserver": "./build.sh",
+    "postbuild": "copyfiles src/site/index.html src/site/css/main.css dist",
+    "production": "npm run build && npm run postbuild && npm run bs",
+    "bs": "npm run buildserver && npm run serve",
+    "bc": "npm run build && npm run postbuild"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "pg-promise": "^7.2.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-redux": "^5.0.5",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.6.0",
+    "redux-jetpack": "0.0.2",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-async-to-generator": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "copy-webpack-plugin": "^4.0.1",
+    "copyfiles": "^1.2.0",
+    "css-loader": "^0.28.4",
+    "react-hot-loader": "3.0.0-beta.7",
+    "rimraf": "^2.6.1",
+    "source-map-support": "^0.4.8",
+    "style-loader": "^0.18.1",
+    "webpack": "^2.6.0",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "license": "MIT"
+}

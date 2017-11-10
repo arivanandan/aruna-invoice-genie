@@ -1,0 +1,138 @@
+/* Invoice Display*/
+.invoiceContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  text-align: center;
+}
+
+.invoiceHeader {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  margin: 10px;
+}
+
+.addressBlock {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.productList {
+  box-shadow: 0 0 5px black;
+  margin: 10px;
+}
+
+.productList div {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 2px;
+  padding: 1px;
+}
+
+.productListHeaders {
+  border-bottom: 1px solid black;
+}
+
+.productListRow {
+}
+
+/* Invoice Display */
+
+/* Invoice Create */
+
+input[type=text] {
+  border: none;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.createContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.createToolkit {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px;
+}
+
+.inputAddress input{
+  box-shadow: 1px 2px 7px #46dbc4;
+  padding: 5px;
+  margin: 5px;
+}
+
+.inputAddress .nameId {
+  display: flex;
+}
+
+.inputAddress .nameId input{
+  flex: 1;
+}
+
+.inputAddress .address {
+  display: flex;
+}
+
+.inputAddress .address input{
+  flex: 1;
+}
+
+.inputHeaders {
+  display: flex;
+  margin: 10px;
+  flex: 0 0 100%;
+  flex-direction: row;
+}
+
+.inputHeaders .textHeaders {
+  width: 73%;
+  display: flex;
+}
+
+.inputHeaders .textHeaders div {
+  flex: 1;
+}
+
+.inputHeaders .radioHeaders {
+  width: 27%;
+  display: flex;
+}
+
+.inputHeaders .radioHeaders div {
+  flex: 1;
+  text-align: center;
+}
+
+.inputRow {
+  display: flex;
+  box-shadow: 1px 2px 7px #46dbc4;
+  padding: 5px;
+  margin: 5px;
+}
+
+.inputRow input{
+  flex: 1;
+  flex-direction: row;
+}
+
+.matchRow {
+  display: flex;
+  box-shadow: 1px 2px 7px #7cdb45;
+  padding: 5px;
+  margin: 5px;
+}
+
+.matchRow div {
+  flex: 1;
+  flex-direction: row;
+}
+
+/* Invoice Create */

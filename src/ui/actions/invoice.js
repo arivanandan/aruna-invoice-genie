@@ -11,7 +11,7 @@ export async function create(data) {
       method: 'POST',
       body: JSON.stringify(data)
   }
-  const res = await fetch(`http://localhost:9000/api/invoice/create`, options)
+  const res = await fetch(`http://aruna.herokuapp.com/api/invoice/create`, options)
   console.log('Create Invoice Action Result -> ', res)
   res.status === 200
     ? res.json().then(
@@ -22,7 +22,7 @@ export async function create(data) {
 
 export async function display(id) {
   console.log('Display invoice ', id)
-  const res = await fetch(`http://localhost:9000/api/invoice/${id}`)
+  const res = await fetch(`http://aruna.herokuapp.com/api/invoice/${id}`)
   console.log('Display Invoice Action Result -> ', res)
   if (res.status === 200)
     res.json().then(

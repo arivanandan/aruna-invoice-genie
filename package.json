@@ -4,7 +4,6 @@
   "author": "Arivanandan",
   "scripts": {
     "start": "npm run bs",
-    "serve": "node dist/src/server",
     "dev": "webpack-dev-server",
     "lint": "eslint src",
     "prebuild": "rimraf dist",
@@ -12,6 +11,7 @@
     "buildserver": "./build.sh",
     "postbuild": "copyfiles src/site/index.html src/site/css/main.css dist",
     "production": "npm run build && npm run postbuild && npm run bs",
+    "serve": "node dist/src/server",
     "bs": "npm run buildserver && npm run serve",
     "bc": "npm run build && npm run postbuild"
   },
@@ -20,6 +20,7 @@
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "morgan": "^1.9.0",
     "pg-promise": "^7.2.1",

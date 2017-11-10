@@ -5,7 +5,7 @@ var CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: [
     "babel-polyfill",
-    
+
     "react-hot-loader/patch",
     // activate HMR for React
 
@@ -42,11 +42,11 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: ["babel-loader"],
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
@@ -78,5 +78,9 @@ module.exports = {
 
     hot: true
     // enable HMR on the server
+  },
+
+  node: {
+    fs: "empty"
   }
 };

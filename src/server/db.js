@@ -8,7 +8,7 @@ const connection = {
   password: 'aruna'
 }
 
-const db = pgPromise()(connection)
+const db = pgPromise()(process.env.DATABASE_URL || connection)
 
 export { db }
 export { pgPromise }

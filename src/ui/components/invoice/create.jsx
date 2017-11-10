@@ -42,16 +42,27 @@ class Create extends Component {
   render() {
     return (
       <div className="createContainer">
-        <h2>Aruna Invoice Genie</h2>
-        <div>
+        <h2>
+          Aruna Invoice Genie
           <input
+              type="button"
+              name="submit"
+              className="createInvoice"
+              value="Create Invoice"
+              onClick={this.create}
+            />
+        </h2>
+        <div className="igst">
+          <span>IGST</span>
+          <input
+            id="igst"
             type="checkbox"
             value="IGST"
             placeholder="Product"
             checked={this.props.input.igst}
             onChange={trackInput.checkbox}
           />
-          IGST
+          <label htmlFor="igst"></label>
         </div>
         <div className="customerAddress">
           <div className="nameId">
@@ -80,97 +91,92 @@ class Create extends Component {
             />
           </div>
         </div>
+        <div className="form-table">
+          {
+            <div className="inputHeaders">
+              <div>Product Name</div>
+              <div>MRP</div>
+              <div>Selling Price</div>
+              <div>Quantity</div>
+              <div>GST</div>
+            </div>
+          }
+          {[...Array(this.props.input.rows.length).keys()].map(row => (
+            <div key={row}>
+              <div className="inputRow">
+                <input
+                  type="text"
+                  name="name"
+                  data-row={row}
+                  placeholder="Product"
+                  value={this.props.input.rows[row].name}
+                  onChange={this.findProduct(row, this.props.input.rows[row].pid)}
+                />
+                <input
+                  type="text"
+                  name="mrp"
+                  data-row={row}
+                  placeholder="MRP"
+                  value={this.props.input.rows[row].mrp}
+                  disabled={this.props.input.rows[row].pid === "" ? false : true}
+                  onChange={this.trackInput(row, "textbox")}
+                />
+                <input
+                  type="text"
+                  name="price"
+                  data-row={row}
+                  placeholder="Selling Price"
+                  value={this.props.input.rows[row].price}
+                  onChange={this.trackInput(row, "textbox")}
+                />
+                <input
+                  type="text"
+                  name="quantity"
+                  data-row={row}
+                  placeholder="Quantity"
+                  value={this.props.input.rows[row].quantity}
+                  onChange={this.trackInput(row, "textbox")}
+                />
+                <input
+                  type="text"
+                  name="gst"
+                  data-row={row}
+                  placeholder="GST"
+                  value={this.props.input.rows[row].gst}
+                  disabled={this.props.input.rows[row].pid === "" ? false : true}
+                  onChange={this.trackInput(row, "textbox")}
+                />
+              </div>
+              <div>
+                {this.props.refinedProductMatches &&
+                  this.props.currentActive == row &&
+                  this.props.refinedProductMatches.map(match => (
+                    <div
+                      className="matchRow"
+                      data-row={row}
+                      onClick={() => this.selectProduct(row, match)}
+                    >
+                      <div>{match.name}</div>
+                      <div>{match.mrp}</div>
+                      <div>{match.price}</div>
+                      <div>{match.gst}</div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </div>
         <div className="createToolkit">
           <div>
             <input
               type="button"
-              value="+"
+              value="Add Item +"
+              className="addRow"
               name="addRow"
               onClick={trackInput.addRow}
             />
           </div>
-          <div>
-            <input
-              type="button"
-              name="submit"
-              value="Create Invoice"
-              onClick={this.create}
-            />
-          </div>
         </div>
-        {
-          <div className="inputHeaders">
-            <div>Product Name</div>
-            <div>MRP</div>
-            <div>Selling Price</div>
-            <div>Quantity</div>
-            <div>GST</div>
-          </div>
-        }
-        {[...Array(this.props.input.rows.length).keys()].map(row => (
-          <div key={row}>
-            <div className="inputRow">
-              <input
-                type="text"
-                name="name"
-                data-row={row}
-                placeholder="Product"
-                value={this.props.input.rows[row].name}
-                onChange={this.findProduct(row, this.props.input.rows[row].pid)}
-              />
-              <input
-                type="text"
-                name="mrp"
-                data-row={row}
-                placeholder="MRP"
-                value={this.props.input.rows[row].mrp}
-                disabled={this.props.input.rows[row].pid === "" ? false : true}
-                onChange={this.trackInput(row, "textbox")}
-              />
-              <input
-                type="text"
-                name="price"
-                data-row={row}
-                placeholder="Selling Price"
-                value={this.props.input.rows[row].price}
-                onChange={this.trackInput(row, "textbox")}
-              />
-              <input
-                type="text"
-                name="quantity"
-                data-row={row}
-                placeholder="Quantity"
-                value={this.props.input.rows[row].quantity}
-                onChange={this.trackInput(row, "textbox")}
-              />
-              <input
-                type="text"
-                name="gst"
-                data-row={row}
-                placeholder="GST"
-                value={this.props.input.rows[row].gst}
-                disabled={this.props.input.rows[row].pid === "" ? false : true}
-                onChange={this.trackInput(row, "textbox")}
-              />
-            </div>
-            <div>
-              {this.props.refinedProductMatches &&
-                this.props.currentActive == row &&
-                this.props.refinedProductMatches.map(match => (
-                  <div
-                    className="matchRow"
-                    data-row={row}
-                    onClick={() => this.selectProduct(row, match)}
-                  >
-                    <div>{match.name}</div>
-                    <div>{match.mrp}</div>
-                    <div>{match.price}</div>
-                    <div>{match.gst}</div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        ))}
         {this.props.redirect && <Redirect to={this.props.redirect} />}
       </div>
     );

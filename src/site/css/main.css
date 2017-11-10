@@ -1,4 +1,10 @@
 /* Invoice Display*/
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #80808021;
+}
+
 .invoiceContainer {
   display: flex;
   flex-direction: column;
@@ -6,6 +12,18 @@
 
 h2 {
   text-align: center;
+  background: black;
+  margin: 0 0 24px 0;
+  padding: 0 12px;
+  text-align: left;
+  color: white;
+  font-size: 20px;
+  line-height: 52px;
+}
+
+.createInvoice {
+  float: right;
+  margin: 8px;
 }
 
 .invoiceHeader {
@@ -45,10 +63,71 @@ h2 {
 
 /* Invoice Create */
 
+.form-table {
+  border-radius: 5px;
+  margin: 8px;
+  border: solid 1px gray;
+  background: #f3f3f3;
+}
+
 input[type=text] {
-  border: none;
-  border-color: transparent;
-  background-color: transparent;
+  border: solid 1px gray;
+  border-radius: 5px;
+  background-color: white;
+  height: 32px;
+  margin: 2px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+input[type=button]  {
+  height: 36px;
+  -webkit-appearance: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  background: #00539f;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + label {
+  background-color: #fafafa;
+  border: 1px solid #cacece;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  padding: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+
+input[type=checkbox]:checked + label {
+  background-color: #e9ecee;
+  border: 1px solid #adb8c0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+  color: #99a1a7;
+}
+
+input[type=checkbox]:checked + label:after {
+  content: '\2714';
+  font-size: 20px;
+  left: 2px;
+  position: absolute;
+  top: 0px;
+  left: 3px;
+  color: #00539f;
+}
+
+.igst {
+  margin: 8px;
+  font-weight: bold;
+}
+
+.igst span {
+  margin: 8px;
 }
 
 .createContainer {
@@ -57,16 +136,11 @@ input[type=text] {
 }
 
 .createToolkit {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  margin: 10px;
+  text-align: center;
 }
 
-.customerAddress input{
-  box-shadow: 1px 2px 7px #46dbc4;
-  padding: 5px;
-  margin: 5px;
+.customerAddress {
+  margin: 8px;
 }
 
 .customerAddress .nameId {
@@ -87,14 +161,14 @@ input[type=text] {
 
 .inputHeaders {
   display: flex;
-  margin: 10px;
-  flex: 1;
+  padding: 8px;
   flex-direction: row;
-}
-
-.inputHeaders {
-  display: flex;
+  justify-content: space-evenly;
+  font-size: 18px;
+  font-weight: bold;
   text-align: center;
+  background: #00539f;
+  color: white;
 }
 
 .inputHeaders div {
@@ -103,20 +177,16 @@ input[type=text] {
 
 .inputRow {
   display: flex;
-  box-shadow: 1px 2px 7px #46dbc4;
-  padding: 5px;
-  margin: 5px;
+  margin: 4px 8px;
 }
 
 .inputRow input{
-  text-align: center;
   flex: 1;
   flex-direction: row;
 }
 
 .matchRow {
   display: flex;
-  box-shadow: 1px 2px 7px #7cdb45;
   padding: 5px;
   margin: 5px;
 }

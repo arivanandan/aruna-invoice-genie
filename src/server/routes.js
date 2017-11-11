@@ -54,17 +54,14 @@ export async function createInvoice(req, res) {
     return { ...row, pid }
   }
 
-  const productIdGenerator = async data =>
-    await Promise.all(
-      data.reduce(
-        (out, row) => row.name === ''
-          ? out
-          : row.pid === ''
-            ? out.concat(productIdAdder(row))
-            : out.concat(row),
-        []
+    const productIdGenerator = async data =>
+      await Promise.all(
+        data.map(row =>
+          row.pid === ''
+            ? productIdAdder(row)
+            : row
+        )
       )
-    )
 
   try {
     const customer = input.customer.cname === '' && input.customer.cgstid === ''
@@ -105,13 +102,25 @@ export async function showInvoice(req, res) {
       const unitPrice = productRow.gst === 0
         ? productRow.price
         : ((100 / (100 + productRow.gst)) * productRow.price)
-      const bprice = (unitPrice * productRow.quantity).toFixed(2)
+      const bprice = +(unitPrice * productRow.quantity).toFixed(2)
       const amount = productRow.price * productRow.quantity
-      const gstAmount = (amount - bprice).toFixed(2)
+      const gstAmount = +(amount - bprice).toFixed(2)
       return igst
         ? { ...productRow, bprice, amount, igst: gstAmount }
         : { ...productRow, bprice, amount, cgst: gstAmount / 2, sgst: gstAmount / 2 }
     }
+  )
+  const calculateTotal = productList => productList.reduce(
+    (out, product) => (
+      {
+        bpriceTotal: out.bpriceTotal + product.bprice,
+        cgstTotal: out.cgstTotal + product.cgst,
+        sgstTotal: out.sgstTotal + product.sgst,
+        igstTotal: out.igstTotal + product.igst,
+        total: out.total + product.amount
+      }
+    ),
+    { bpriceTotal: 0, cgstTotal: 0, sgstTotal: 0, igstTotal: 0, total: 0 }
   )
 
   try {
@@ -139,14 +148,20 @@ export async function showInvoice(req, res) {
 
     const { cname, caddress, cgstid } = customerid ? await customerGet(customerid) : { cname: null, caddress: null, cgstid: null }
 
+    const { bpriceTotal, cgstTotal, sgstTotal, igstTotal, total } = calculateTotal(productList)
+
+    console.log('Total Calculated -> ', total)
+
     console.log(iid, dt.toString().substring(0, 15), igst,
       sname, saddress, sgstid,
       cname, caddress, cgstid,
+      bpriceTotal, cgstTotal, sgstTotal, igstTotal, total,
       productList)
     res.status(200).json({
       iid, dt: dt.toString().substring(0, 15), igst,
       sname, saddress, sgstid,
       cname, caddress, cgstid,
+      bpriceTotal, cgstTotal, sgstTotal, igstTotal, total,
       productList
     })
 
@@ -156,18 +171,32 @@ export async function showInvoice(req, res) {
   }
 }
 
-export async function findProductMatch(req, res) {
+export async function getProducts(req, res) {
   console.log('Find Product Match')
-  console.log(req.params.partname)
 
-  const productGet = productid => db.manyOrNone('SELECT * FROM product WHERE name ILIKE $1', ['%' + productid + '%'])
+  const productGet = productid => db.manyOrNone('SELECT * FROM product')
 
   try {
-    const productMatches = await productGet(req.params.partname)
+    const productMatches = await productGet()
     console.log('Product Matches -> ', productMatches)
     res.status(200).json({ productMatches })
   } catch(e) {
     console.log('Find Product Match Error -> ', e)
+    res.status(500)
+  }
+}
+
+export async function getCustomers(req, res) {
+  console.log('Find Customer Match')
+
+  const caddressGet = productid => db.manyOrNone('SELECT * FROM customer')
+
+  try {
+    const customerMatches = await caddressGet()
+    console.log('Customer Address Matches -> ', customerMatches)
+    res.status(200).json({ customerMatches })
+  } catch(e) {
+    console.log('Find Customer Match Error -> ', e)
     res.status(500)
   }
 }

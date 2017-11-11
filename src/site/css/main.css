@@ -203,4 +203,8 @@ input[type=checkbox]:checked + label:after {
   flex-direction: row;
 }
 
+.highlightProductMatch {
+  background-color: gray;
+}
+
 /* Invoice Create */

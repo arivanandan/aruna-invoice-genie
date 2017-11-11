@@ -34,7 +34,7 @@ export function radio(input, row) {
 }
 
 export function setProduct(row, match) {
-  match = { ...match, gst: match.gst.toString() }
+  // match = { ...match, gst: match.gst.toString() }
   console.log('Set Product -> ', row, match)
   updateState('input', input => (
     {
@@ -47,14 +47,15 @@ export function setProduct(row, match) {
   ))
 }
 
-export function setCustomerAddress(input) {
+export function setCustomer(input) {
   const name = input.target.name
   const value = input.target.value
   console.log('Set Customer Address -> ', name, value)
-  updateState('input', input => ({
-    ...input,
-    customer: { ...input.customer, [name]: value }
-  }))
+  updateState('input', input => (
+    {
+      ...input,
+      customer: { ...input.customer, cid: "" }
+    }))
 }
 
 export function setActive(row) {
@@ -62,6 +63,16 @@ export function setActive(row) {
 }
 
 export function newProduct(row) {
+  updateState('input', input => ({
+    ...input,
+    rows: Object.assign(
+      [...input.rows],
+      { [row]: { ...input.rows[row], pid: "" } }
+    )
+  }))
+}
+
+export function newCustomer(row) {
   updateState('input', input => ({
     ...input,
     rows: Object.assign(

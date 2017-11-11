@@ -2,6 +2,8 @@ export default {
   redirect: null,
   productMatches: [],
   refinedProductMatches: [],
+  customerMatches: [],
+  refinedCustomerMatches: [],
   currentActive: "",
   input: {
     igst: false,

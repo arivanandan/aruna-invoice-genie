@@ -158,16 +158,30 @@ export async function showInvoice(req, res) {
 
 export async function findProductMatch(req, res) {
   console.log('Find Product Match')
-  console.log(req.params.partname)
 
-  const productGet = productid => db.manyOrNone('SELECT * FROM product WHERE name ILIKE $1', ['%' + productid + '%'])
+  const productGet = productid => db.manyOrNone('SELECT * FROM product')
 
   try {
-    const productMatches = await productGet(req.params.partname)
+    const productMatches = await productGet()
     console.log('Product Matches -> ', productMatches)
     res.status(200).json({ productMatches })
   } catch(e) {
     console.log('Find Product Match Error -> ', e)
+    res.status(500)
+  }
+}
+
+export async function findCustomerMatch(req, res) {
+  console.log('Find Customer Match')
+
+  const caddressGet = productid => db.manyOrNone('SELECT * FROM caddress')
+
+  try {
+    const customerMatches = await caddressGet()
+    console.log('Customer Address Matches -> ', customerMatches)
+    res.status(200).json({ customerMatches })
+  } catch(e) {
+    console.log('Find Customer Match Error -> ', e)
     res.status(500)
   }
 }

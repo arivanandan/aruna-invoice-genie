@@ -4,6 +4,7 @@ import { connect } from "redux-jetpack";
 import * as trackInput from "../../actions/input-track";
 import * as invoice from "../../actions/invoice";
 import * as product from "../../actions/product";
+import * as customer from "../../actions/customer";
 
 class Create extends Component {
   constructor() {
@@ -11,15 +12,25 @@ class Create extends Component {
     this.create = this.create.bind(this);
   }
 
-  componentWillUpdate() {}
+  componentWillMount() {
+    product.get();
+  }
 
   findProduct(row, pid) {
     return function(e) {
       trackInput.setActive(row);
       if (pid) trackInput.newProduct(row);
-      if (e.target.value.length === 2) product.findMatch(e.target.value);
-      else if (e.target.value.length > 2) product.refineMatches(e.target.value);
+      if (e.target.value.length > 2) product.refineMatches(e.target.value);
       trackInput.textbox(e, row);
+    };
+  }
+
+  findCustomer(cid) {
+    return function(e) {
+      if (cid) trackInput.newCustomer();
+      if (e.target.value.length === 2) customer.findMatch(e.target.value);
+      if (e.target.value.length > 2) customer.refineMatches(e.target.value);
+      trackInput.customerData(e);
     };
   }
 
@@ -33,6 +44,11 @@ class Create extends Component {
   selectProduct(row, match) {
     trackInput.setProduct(row, match);
     product.clearRefinedMatches();
+  }
+
+  selectCustomer(row, match) {
+    trackInput.setCustomer(row, match);
+    customer.clearRefinedMatches();
   }
 
   create() {
@@ -78,6 +94,18 @@ class Create extends Component {
               value={this.props.input.caddress}
               onChange={trackInput.setCustomerAddress}
             />
+          </div>
+          <div>
+            {this.props.refinedCustomerMatches &&
+              this.props.refinedCustomerMatches.map(match => (
+                <div
+                  className="matchRow"
+                  onClick={() => this.selectCustomer(row, match)}
+                >
+                  <div>{match.name}</div>
+                  <div>{match.address}</div>
+                </div>
+              ))}
           </div>
         </div>
         <div className="createToolkit">

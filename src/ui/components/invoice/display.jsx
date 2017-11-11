@@ -10,34 +10,36 @@ class Display extends Component {
   render() {
     return this.props.invoice ? (
       <div className="invoiceContainer">
-        <h2>Invoice</h2>
+        <a href="/"><h2>Aruna Invoice Genie</h2></a>
         <div className="invoiceHeader">
-          <div>Invoice: #{this.props.invoice.iid}</div>
-          <div>Date: {this.props.invoice.dt}</div>
-        </div>
-        <div className="addressBlock">
-          <div className="shopAddress">
-            <div>{this.props.invoice.sname}</div>
-            <div>
-              {this.props.invoice.saddress &&
-                this.props.invoice.saddress
-                  .split(",")
-                  .map(addressLine => <div>{addressLine}</div>)}
+          <div className="addressBlock">
+            <div className="shopAddress">
+              <div>{this.props.invoice.sname}</div>
+              <div>
+                {this.props.invoice.saddress &&
+                  this.props.invoice.saddress
+                    .split(",")
+                    .map(addressLine => <div>{addressLine}</div>)}
+              </div>
+              <div>{this.props.invoice.sgstid}</div>
             </div>
-            <div>{this.props.invoice.sgstid}</div>
           </div>
-          <div className="customerAddress">
-            {this.props.invoice.cname && <div>{this.props.invoice.cname}</div>}
-            {this.props.invoice.caddress && (
-              <div>{this.props.invoice.caddress &&
-                this.props.invoice.caddress
-                  .split(",")
-                  .map(addressLine => <div>{addressLine}</div>)}</div>
-            )}
-            {this.props.invoice.cgstid && (
-              <div>{this.props.invoice.cgstid}</div>
-            )}
+          <div className="invoiceDetails">
+            <div>Invoice: #{this.props.invoice.iid}</div>
+            <div>Date: {this.props.invoice.dt}</div>
           </div>
+        </div>
+        <div className="customerAddress">
+          {this.props.invoice.cname && <div>{this.props.invoice.cname}</div>}
+          {this.props.invoice.caddress && (
+            <div>{this.props.invoice.caddress &&
+              this.props.invoice.caddress
+                .split(",")
+                .map(addressLine => <div>{addressLine}</div>)}</div>
+          )}
+          {this.props.invoice.cgstid && (
+            <div>{this.props.invoice.cgstid}</div>
+          )}
         </div>
         <div className="productList">
           {this.props.invoice.productList && (

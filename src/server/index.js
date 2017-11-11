@@ -15,8 +15,8 @@ app.use(express.static(path.resolve(__dirname, '../..')))
 
 app.get('/api/invoice/:id', r.showInvoice)
 app.post('/api/invoice/create', r.createInvoice)
-app.get('/api/product/match', r.findProductMatch)
-app.get('/api/customer/match', r.findCustomerMatch)
+app.get('/api/product/match', r.getProducts)
+app.get('/api/customer/match', r.getCustomers)
 
 
 app.get('*', (req, res) => {

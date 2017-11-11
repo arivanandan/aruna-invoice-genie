@@ -9,7 +9,8 @@ import * as customer from "../../actions/customer";
 class Create extends Component {
   constructor() {
     super();
-    this.create = this.create.bind(this);
+    this.createInvoice = this.createInvoice.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
   componentWillMount() {
@@ -28,7 +29,7 @@ class Create extends Component {
   findCustomer(cid) {
     return function(e) {
       if (cid) trackInput.newCustomer();
-      if (e.target.value.length === 2) customer.findMatch(e.target.value);
+      if (e.target.value.length === 2) customer.get();
       if (e.target.value.length > 2) customer.refineMatches(e.target.value);
       trackInput.customerData(e);
     };
@@ -43,6 +44,7 @@ class Create extends Component {
 
   selectProduct(row, match) {
     trackInput.setProduct(row, match);
+    this.quantityInput.focus();
     product.clearRefinedMatches();
   }
 
@@ -51,8 +53,31 @@ class Create extends Component {
     customer.clearRefinedMatches();
   }
 
-  create() {
+  createInvoice() {
     const status = invoice.create(this.props.input);
+  }
+
+  handleKeyUp(e) {
+    console.log("handleKeyUp", e.keycode);
+    if (e.keyCode === 13) {
+      if (this.props.highlightProductMatch !== null) {
+        this.selectProduct(
+          this.props.currentActive,
+          this.props.refinedProductMatches[this.props.highlightProductMatch]
+        );
+        trackInput.clearProductHighlight();
+      } else trackInput.addRow();
+    }
+    if (e.keyCode === 40)
+      trackInput.highlightProductMatch(
+        "+",
+        this.props.refinedProductMatches.length
+      );
+    if (e.keyCode === 38)
+      trackInput.highlightProductMatch(
+        "-",
+        this.props.refinedProductMatches.length
+      );
   }
 
   render() {
@@ -61,12 +86,12 @@ class Create extends Component {
         <h2>
           Aruna Invoice Genie
           <input
-              type="button"
-              name="submit"
-              className="createInvoice"
-              value="Create Invoice"
-              onClick={this.create}
-            />
+            type="button"
+            name="submit"
+            className="createInvoice"
+            value="Create Invoice"
+            onClick={this.createInvoice}
+          />
         </h2>
         <div className="igst">
           <span>IGST</span>
@@ -78,7 +103,7 @@ class Create extends Component {
             checked={this.props.input.igst}
             onChange={trackInput.checkbox}
           />
-          <label htmlFor="igst"></label>
+          <label htmlFor="igst" />
         </div>
         <div className="customerAddress">
           <div className="nameId">
@@ -86,15 +111,15 @@ class Create extends Component {
               type="text"
               name="cname"
               placeholder="Customer Name"
-              value={this.props.input.cname}
-              onChange={trackInput.setCustomerAddress}
+              value={this.props.input.customer.cname}
+              onChange={this.findCustomer(this.props.input.customer.cid)}
             />
             <input
               type="text"
               name="cgstid"
               placeholder="Customer GSTID"
-              value={this.props.input.cgstid}
-              onChange={trackInput.setCustomerAddress}
+              value={this.props.input.customer.cgstid}
+              onChange={trackInput.customerData}
             />
           </div>
           <div className="address">
@@ -102,8 +127,8 @@ class Create extends Component {
               type="text"
               name="caddress"
               placeholder="Customer Address"
-              value={this.props.input.caddress}
-              onChange={trackInput.setCustomerAddress}
+              value={this.props.input.customer.caddress}
+              onChange={trackInput.customerData}
             />
           </div>
           <div>
@@ -111,10 +136,10 @@ class Create extends Component {
               this.props.refinedCustomerMatches.map(match => (
                 <div
                   className="matchRow"
-                  onClick={() => this.selectCustomer(row, match)}
+                  onClick={() => trackInput.setCustomer(match)}
                 >
-                  <div>{match.name}</div>
-                  <div>{match.address}</div>
+                  <span>{match.cname}</span>
+                  <span>{match.caddress}</span>
                 </div>
               ))}
           </div>
@@ -137,8 +162,16 @@ class Create extends Component {
                   name="name"
                   data-row={row}
                   placeholder="Product"
+                  disabled={
+                    this.props.input.rows[row].pid === "" ? false : true
+                  }
+                  autoFocus
                   value={this.props.input.rows[row].name}
-                  onChange={this.findProduct(row, this.props.input.rows[row].pid)}
+                  onChange={this.findProduct(
+                    row,
+                    this.props.input.rows[row].pid
+                  )}
+                  onKeyUp={this.handleKeyUp}
                 />
                 <input
                   type="text"
@@ -146,8 +179,11 @@ class Create extends Component {
                   data-row={row}
                   placeholder="MRP"
                   value={this.props.input.rows[row].mrp}
-                  disabled={this.props.input.rows[row].pid === "" ? false : true}
+                  disabled={
+                    this.props.input.rows[row].pid === "" ? false : true
+                  }
                   onChange={this.trackInput(row, "textbox")}
+                  onKeyUp={this.handleKeyUp}
                 />
                 <input
                   type="text"
@@ -156,14 +192,17 @@ class Create extends Component {
                   placeholder="Selling Price"
                   value={this.props.input.rows[row].price}
                   onChange={this.trackInput(row, "textbox")}
+                  onKeyUp={this.handleKeyUp}
                 />
                 <input
                   type="text"
                   name="quantity"
                   data-row={row}
                   placeholder="Quantity"
+                  ref={input => { this.quantityInput = input; }}
                   value={this.props.input.rows[row].quantity}
                   onChange={this.trackInput(row, "textbox")}
+                  onKeyUp={this.handleKeyUp}
                 />
                 <input
                   type="text"
@@ -171,22 +210,30 @@ class Create extends Component {
                   data-row={row}
                   placeholder="GST"
                   value={this.props.input.rows[row].gst}
-                  disabled={this.props.input.rows[row].pid === "" ? false : true}
+                  disabled={
+                    this.props.input.rows[row].pid === "" ? false : true
+                  }
                   onChange={this.trackInput(row, "textbox")}
+                  onKeyUp={this.handleKeyUp}
                 />
               </div>
               <div>
                 {this.props.refinedProductMatches &&
                   this.props.currentActive == row &&
-                  this.props.refinedProductMatches.map(match => (
+                  this.props.refinedProductMatches.map((match, matchIndex) => (
                     <div
-                      className="matchRow"
+                      className={
+                        this.props.highlightProductMatch === matchIndex
+                          ? "matchRow highlightProductMatch"
+                          : "matchRow"
+                      }
                       data-row={row}
                       onClick={() => this.selectProduct(row, match)}
                     >
                       <div>{match.name}</div>
                       <div>{match.mrp}</div>
                       <div>{match.price}</div>
+                      <div>{null}</div>
                       <div>{match.gst}</div>
                     </div>
                   ))}

@@ -1,4 +1,5 @@
 import { pgPromise, db } from './db'
+import converter from 'number-to-words'
 require("babel-core/register")
 require("babel-polyfill")
 
@@ -150,18 +151,20 @@ export async function showInvoice(req, res) {
 
     const { bpriceTotal, cgstTotal, sgstTotal, igstTotal, total } = calculateTotal(productList)
 
+    const totalInWords = converter.toWords(total)
+
     console.log('Total Calculated -> ', total)
 
     console.log(iid, dt.toString().substring(0, 15), igst,
       sname, saddress, sgstid,
       cname, caddress, cgstid,
-      bpriceTotal, cgstTotal, sgstTotal, igstTotal, total,
+      bpriceTotal, cgstTotal, sgstTotal, igstTotal, total, totalInWords,
       productList)
     res.status(200).json({
       iid, dt: dt.toString().substring(0, 15), igst,
       sname, saddress, sgstid,
       cname, caddress, cgstid,
-      bpriceTotal, cgstTotal, sgstTotal, igstTotal, total,
+      bpriceTotal, cgstTotal, sgstTotal, igstTotal, total, totalInWords,
       productList
     })
 

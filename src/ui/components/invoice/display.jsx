@@ -102,11 +102,7 @@ class Display extends Component {
               </div>
             ))}
           {this.props.invoice.total && (
-            <div className="productListRow">
-              <div />
-              <div />
-              <div />
-              <div />
+            <div className="invoiceTotalRow">
               <div>{this.props.invoice.bpriceTotal}</div>
               {this.props.invoice.igst ? (
                 <div>{this.props.invoice.igstTotal}</div>
@@ -117,6 +113,7 @@ class Display extends Component {
                 </div>
               )}
               <div>{this.props.invoice.total}</div>
+              <div>{this.props.invoice.totalInWords}</div>
             </div>
           )}
         </div>

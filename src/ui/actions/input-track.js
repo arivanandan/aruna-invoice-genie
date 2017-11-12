@@ -34,7 +34,6 @@ export function radio(input, row) {
 }
 
 export function setProduct(row, match) {
-  match = { ...match, gst: match.gst.toString() }
   console.log('Set Product -> ', row, match)
   updateState('input', input => (
     {
@@ -47,14 +46,20 @@ export function setProduct(row, match) {
   ))
 }
 
-export function setCustomerAddress(input) {
+export function customerData(input) {
+  console.log('Customer Data -> ', input)
   const name = input.target.name
   const value = input.target.value
-  console.log('Set Customer Address -> ', name, value)
-  updateState('input', input => ({
-    ...input,
-    customer: { ...input.customer, [name]: value }
-  }))
+  updateState('input', input => (
+    {
+      ...input,
+      customer: { ...input.customer, [name]: value }
+    }))
+}
+
+export function setCustomer(match) {
+  console.log('Set Customer -> ', match)
+  updateState('input', input => ( { ...input, customer: match } ))
 }
 
 export function setActive(row) {
@@ -69,6 +74,31 @@ export function newProduct(row) {
       { [row]: { ...input.rows[row], pid: "" } }
     )
   }))
+}
+
+export function newCustomer(row) {
+  updateState('input', input => (
+    {
+      ...input,
+      customer: { ...input.customer, cid: "" }
+    }))
+}
+
+export function highlightProductMatch(op, matchCount) {
+  const calc = {
+    '+': no => ++no,
+    '-': no => --no
+  }
+  console.log('Highlight Product Match -> ', op)
+  updateState('highlightProductMatch', highlightProductMatch =>
+    highlightProductMatch === null
+      ? 0
+      : calc[op]((highlightProductMatch + matchCount)) % matchCount
+  )
+}
+
+export function clearProductHighlight() {
+  updateState('highlightProductMatch', highlightProductMatch => null)
 }
 
 export function addRow() {

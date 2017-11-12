@@ -1,7 +1,10 @@
 export default {
   redirect: null,
+  highlightProductMatch: null,
   productMatches: [],
   refinedProductMatches: [],
+  customerMatches: [],
+  refinedCustomerMatches: [],
   currentActive: "",
   input: {
     igst: false,
@@ -12,38 +15,6 @@ export default {
       cgstid: ""
     },
     rows: [
-      {
-        pid: "",
-        name: "",
-        mrp: "",
-        price: "",
-        quantity: "",
-        gst: ""
-      },
-      {
-        pid: "",
-        name: "",
-        mrp: "",
-        price: "",
-        quantity: "",
-        gst: ""
-      },
-      {
-        pid: "",
-        name: "",
-        mrp: "",
-        price: "",
-        quantity: "",
-        gst: ""
-      },
-      {
-        pid: "",
-        name: "",
-        mrp: "",
-        price: "",
-        quantity: "",
-        gst: ""
-      },
       {
         pid: "",
         name: "",

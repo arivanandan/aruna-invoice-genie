@@ -10,55 +10,75 @@ class Display extends Component {
   render() {
     return this.props.invoice ? (
       <div className="invoiceContainer">
-        <a href="/"><h2>Aruna Invoice Genie</h2></a>
+        <h2>Invoice</h2>
         <div className="invoiceHeader">
-          <div className="addressBlock">
-            <div className="shopAddress">
-              <div>{this.props.invoice.sname}</div>
+          <div>Invoice: #{this.props.invoice.iid}</div>
+          <div>Date: {this.props.invoice.dt}</div>
+        </div>
+        <div className="addressBlock">
+          <div className="shopAddress">
+            <div>{this.props.invoice.sname}</div>
+            <div>
+              {this.props.invoice.saddress &&
+                this.props.invoice.saddress
+                  .split(",")
+                  .map(addressLine => <div>{addressLine}</div>)}
+            </div>
+            <div>{this.props.invoice.sgstid}</div>
+          </div>
+          <div className="customerAddress">
+            {this.props.invoice.cname && <div>{this.props.invoice.cname}</div>}
+            {this.props.invoice.caddress && (
               <div>
-                {this.props.invoice.saddress &&
-                  this.props.invoice.saddress
+                {this.props.invoice.caddress &&
+                  this.props.invoice.caddress
                     .split(",")
                     .map(addressLine => <div>{addressLine}</div>)}
               </div>
-              <div>{this.props.invoice.sgstid}</div>
-            </div>
+            )}
+            {this.props.invoice.cgstid && (
+              <div>{this.props.invoice.cgstid}</div>
+            )}
           </div>
-          <div className="invoiceDetails">
-            <div>Invoice: #{this.props.invoice.iid}</div>
-            <div>Date: {this.props.invoice.dt}</div>
-          </div>
-        </div>
-        <div className="customerAddress">
-          {this.props.invoice.cname && <div>{this.props.invoice.cname}</div>}
-          {this.props.invoice.caddress && (
-            <div>{this.props.invoice.caddress &&
-              this.props.invoice.caddress
-                .split(",")
-                .map(addressLine => <div>{addressLine}</div>)}</div>
-          )}
-          {this.props.invoice.cgstid && (
-            <div>{this.props.invoice.cgstid}</div>
-          )}
         </div>
         <div className="productList">
           {this.props.invoice.productList && (
             <div className="productListHeaders">
-              <div><b>Product</b></div>
-              <div><b>MRP</b></div>
-              <div><b>Unit Price</b></div>
-              <div><b>Quantity</b></div>
-              <div><b>Base Price</b></div>
-              <div><b>Tax Rate</b></div>
+              <div>
+                <b>Product</b>
+              </div>
+              <div>
+                <b>MRP</b>
+              </div>
+              <div>
+                <b>Unit Price</b>
+              </div>
+              <div>
+                <b>Quantity</b>
+              </div>
+              <div>
+                <b>Base Price</b>
+              </div>
+              <div>
+                <b>Tax Rate</b>
+              </div>
               {this.props.invoice.igst ? (
-                <div><b>IGST</b></div>
+                <div>
+                  <b>IGST</b>
+                </div>
               ) : (
                 <div>
-                  <div><b>CGST</b></div>
-                  <div><b>SGST</b></div>
+                  <div>
+                    <b>CGST</b>
+                  </div>
+                  <div>
+                    <b>SGST</b>
+                  </div>
                 </div>
               )}
-              <div><b>Amount</b></div>
+              <div>
+                <b>Amount</b>
+              </div>
             </div>
           )}
           {this.props.invoice.productList &&
@@ -81,6 +101,24 @@ class Display extends Component {
                 <div>{row.amount}</div>
               </div>
             ))}
+          {this.props.invoice.total && (
+            <div className="productListRow">
+              <div />
+              <div />
+              <div />
+              <div />
+              <div>{this.props.invoice.bpriceTotal}</div>
+              {this.props.invoice.igst ? (
+                <div>{this.props.invoice.igstTotal}</div>
+              ) : (
+                <div>
+                  <div>{this.props.invoice.cgstTotal}</div>
+                  <div>{this.props.invoice.sgstTotal}</div>
+                </div>
+              )}
+              <div>{this.props.invoice.total}</div>
+            </div>
+          )}
         </div>
       </div>
     ) : (

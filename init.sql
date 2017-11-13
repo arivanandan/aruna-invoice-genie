@@ -17,7 +17,8 @@ CREATE TABLE product(
   name TEXT NOT NULL,
   mrp FLOAT NOT NULL,
   price FLOAT NOT NULL,
-  gst INT NOT NULL
+  gst INT NOT NULL,
+  active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE invoice(

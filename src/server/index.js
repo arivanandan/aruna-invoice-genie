@@ -15,8 +15,11 @@ app.use(express.static(path.resolve(__dirname, '../..')))
 
 app.get('/api/invoice/:id', r.showInvoice)
 app.post('/api/invoice/create', r.createInvoice)
-app.get('/api/product/match', r.getProducts)
-app.get('/api/customer/match', r.getCustomers)
+app.get('/api/product/delete/:id', r.deleteProduct)
+app.post('/api/product/update', r.updateProduct)
+app.post('/api/product/create', r.createProduct)
+app.get('/api/product', r.getProducts)
+app.get('/api/customer', r.getCustomers)
 
 
 app.get('*', (req, res) => {

@@ -177,12 +177,12 @@ export async function showInvoice(req, res) {
 export async function getProducts(req, res) {
   console.log('Find Product Match')
 
-  const productGet = productid => db.manyOrNone('SELECT * FROM product')
+  const productGet = productid => db.manyOrNone('SELECT * FROM product WHERE active = TRUE')
 
   try {
-    const productMatches = await productGet()
-    console.log('Product Matches -> ', productMatches)
-    res.status(200).json({ productMatches })
+    const products = await productGet()
+    console.log('Products -> ', products)
+    res.status(200).json({ products })
   } catch(e) {
     console.log('Find Product Match Error -> ', e)
     res.status(500)
@@ -190,16 +190,79 @@ export async function getProducts(req, res) {
 }
 
 export async function getCustomers(req, res) {
-  console.log('Find Customer Match')
+  console.log('Get Customers')
 
-  const caddressGet = productid => db.manyOrNone('SELECT * FROM customer')
+  const cGet = productid => db.manyOrNone('SELECT * FROM customer')
 
   try {
-    const customerMatches = await caddressGet()
-    console.log('Customer Address Matches -> ', customerMatches)
-    res.status(200).json({ customerMatches })
+    const customers = await cGet()
+    console.log('Customers  -> ', customers)
+    res.status(200).json({ customers })
   } catch(e) {
-    console.log('Find Customer Match Error -> ', e)
+    console.log('Get Customers Error -> ', e)
+    res.status(500)
+  }
+}
+
+export async function createProduct(req, res) {
+  console.log('Create Product')
+  console.log(req.body)
+
+  const addP = p =>
+    db.one(
+      `INSERT INTO product(name, mrp, price, gst)
+      VALUES($1, $2, $3, $4)
+      RETURNING pid`,
+      [p.name, p.mrp, p.price, p.gst]
+    )
+
+  try {
+    const created = await addP(req.body)
+    console.log('Created Product -> ', created)
+    res.status(200)
+  } catch(e) {
+    console.log('Create Product Error -> ', e)
+    res.status(500)
+  }
+}
+
+export async function updateProduct(req, res) {
+  console.log('Update Product')
+  console.log(req.body)
+
+  const upP = p => db.oneOrNone(`
+    UPDATE product
+    SET name = $2, mrp = $3, price = $4, gst = $5
+    WHERE pid = $1
+    RETURNING pid`,
+    [p.pid, p.name, p.mrp, p.price, p.gst])
+
+  try {
+    const updated = await upP(req.body)
+    console.log('Updated Product -> ', updated)
+    res.status(200)
+  } catch(e) {
+    console.log('Update Product Error -> ', e)
+    res.status(500)
+  }
+}
+
+export async function deleteProduct(req, res) {
+  console.log('Delete Product')
+
+  const delP = id => db.oneOrNone(`
+    UPDATE product
+    SET active=FALSE
+    WHERE pid = $1
+    RETURNING pid`,
+    [id])
+
+  try {
+    const deleted = await delP(req.params.id)
+    console.log('Deleted Product -> ', deleted)
+    res.status(200)
+  } catch(e) {
+    console.log('Delete Product Error -> ', e)
     res.status(500)
   }
 }

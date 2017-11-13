@@ -25,7 +25,7 @@ export async function create(data) {
 
 export async function display(id) {
   console.log('Display invoice ', id)
-  const res = await fetch(`http://aruna.herokuapp.com/api/invoice/${id}`)
+  const res = await fetch(`http://localhost:9000/api/invoice/${id}`)
   console.log('Display Invoice Action Result -> ', res)
   let resData
   if (res.status === 200) {

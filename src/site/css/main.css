@@ -80,7 +80,7 @@ input[type=text] {
   font-size: 14px;
 }
 
-input[type=button]  {
+input[type=button], .btn  {
   height: 36px;
   -webkit-appearance: none;
   font-size: 14px;
@@ -180,7 +180,7 @@ input[type=checkbox]:checked + label:after {
   margin: 4px 8px;
 }
 
-.inputRow input{
+.inputRow > * {
   flex: 1;
   flex-direction: row;
 }

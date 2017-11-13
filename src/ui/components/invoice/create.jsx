@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router";
 import { connect } from "redux-jetpack";
-import * as trackInput from "../../actions/input-track";
+import * as trackInput from "../../actions/invoice-input";
 import * as invoice from "../../actions/invoice";
 import * as product from "../../actions/product";
 import * as customer from "../../actions/customer";
@@ -21,7 +21,7 @@ class Create extends Component {
     return function(e) {
       trackInput.setActive(row);
       if (pid) trackInput.newProduct(row);
-      if (e.target.value.length > 2) product.refineMatches(e.target.value);
+      if (e.target.value.length > 2) product.findMatches(e.target.value);
       trackInput.textbox(e, row);
     };
   }
@@ -30,7 +30,7 @@ class Create extends Component {
     return function(e) {
       if (cid) trackInput.newCustomer();
       if (e.target.value.length === 2) customer.get();
-      if (e.target.value.length > 2) customer.refineMatches(e.target.value);
+      if (e.target.value.length > 2) customer.findMatches(e.target.value);
       trackInput.customerData(e);
     };
   }
@@ -45,12 +45,12 @@ class Create extends Component {
   selectProduct(row, match) {
     trackInput.setProduct(row, match);
     this.quantityInput.focus();
-    product.clearRefinedMatches();
+    product.clearMatches();
   }
 
   selectCustomer(row, match) {
     trackInput.setCustomer(row, match);
-    customer.clearRefinedMatches();
+    customer.clearMatches();
   }
 
   createInvoice() {
@@ -63,7 +63,7 @@ class Create extends Component {
       if (this.props.highlightProductMatch !== null) {
         this.selectProduct(
           this.props.currentActive,
-          this.props.refinedProductMatches[this.props.highlightProductMatch]
+          this.props.productMatches[this.props.highlightProductMatch]
         );
         trackInput.clearProductHighlight();
       } else trackInput.addRow();
@@ -71,12 +71,12 @@ class Create extends Component {
     if (e.keyCode === 40)
       trackInput.highlightProductMatch(
         "+",
-        this.props.refinedProductMatches.length
+        this.props.productMatches.length
       );
     if (e.keyCode === 38)
       trackInput.highlightProductMatch(
         "-",
-        this.props.refinedProductMatches.length
+        this.props.productMatches.length
       );
   }
 
@@ -132,8 +132,8 @@ class Create extends Component {
             />
           </div>
           <div>
-            {this.props.refinedCustomerMatches &&
-              this.props.refinedCustomerMatches.map(match => (
+            {this.props.customerMatches &&
+              this.props.customerMatches.map(match => (
                 <div
                   className="matchRow"
                   onClick={() => trackInput.setCustomer(match)}
@@ -218,9 +218,9 @@ class Create extends Component {
                 />
               </div>
               <div>
-                {this.props.refinedProductMatches &&
+                {this.props.productMatches &&
                   this.props.currentActive == row &&
-                  this.props.refinedProductMatches.map((match, matchIndex) => (
+                  this.props.productMatches.map((match, matchIndex) => (
                     <div
                       className={
                         this.props.highlightProductMatch === matchIndex

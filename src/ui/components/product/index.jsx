@@ -71,12 +71,14 @@ class Product extends Component {
   render() {
     return (
       <div>
-        <div className="inputHeaders">
-          <div>Name</div>
-          <div>MRP</div>
-          <div>Selling Price</div>
-          <div>GST</div>
-          <div>
+        <div className="productInputHeaders">
+          <div className="headerTitles">
+            <div>Name</div>
+            <div>MRP</div>
+            <div>Selling Price</div>
+            <div>GST</div>
+          </div>
+          <div className="headerAddButton">
             <input
               type="button"
               value="Add Product"
@@ -85,7 +87,7 @@ class Product extends Component {
           </div>
         </div>
         {Object.keys(this.props.productManage.insert).length !== 0 && (
-          <div className="inputRow">
+          <div className="productInputRow">
             <input
               type="text"
               name="name"
@@ -115,7 +117,7 @@ class Product extends Component {
               value={this.props.productManage.insert.gst}
               onChange={productInput.captureInsert}
             />
-            <input type="button" value="Create" onClick={this.createProduct} />
+            <input id="addNewButton" type="button" value="Create" onClick={this.createProduct} />
           </div>
         )}
         {this.props.products &&

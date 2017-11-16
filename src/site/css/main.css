@@ -1,3 +1,34 @@
+/* Navigation Bar */
+
+.navBar {
+  display: flex;
+  background: black;
+  color: white;
+  font-size: 20px;
+  line-height: 52px;
+}
+
+.navBar div {
+  flex: 1;
+  display: flex;
+}
+
+.links {
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.navBar a {
+  text-decoration: none;
+  padding: 10px;
+}
+
+.navBar a:visited {
+  color: crimson;
+}
+
+/* Navigation Bar */
+
 /* Invoice Display*/
 body {
   margin: 0;
@@ -11,14 +42,11 @@ body {
 }
 
 h2 {
-  text-align: center;
   background: black;
-  margin: 0 0 24px 0;
-  padding: 0 12px;
+  padding: 0 15px;
   text-align: left;
-  color: white;
+  color: lime;
   font-size: 20px;
-  line-height: 52px;
 }
 
 #sname {
@@ -49,87 +77,102 @@ h2 {
 }
 
 .productList {
-  box-shadow: 0 0 5px black;
-  margin: 10px;
+  padding: 10px;
+  width: 100%;
 }
 
-.productList div {
-  display: flex;
-  margin: 2px;
-  padding: 1px;
+#productListHeader {
+  background-color: #ddd;
 }
 
-.productListHeaders {
-  border-bottom: 1px solid black;
+#productListHeader th {
+  border-top: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+  line-height: 200%;
+  text-align: center;
 }
 
-.productListRow div {
-  align-items: center;
-  justify-content: flex-end;
-  padding-left: 5px;
-  padding-right: 5px;
+tr > :first-child {
+  border-left: 2px solid #ddd;
 }
 
-.productListHeaders div {
-  align-items: center;
-  justify-content: center;
+.productListRow td {
+  padding: 5px;
+  border-right: 2px solid #ddd;
+
 }
 
 .pr-product {
-  justify-content: flex-start !important;
-  flex: 4;
+  border-right: 2px solid #ddd;
+  width: 34%;
+}
+
+.pr-quantity,
+.pr-tax {
+  text-align: center;
+  width: 8%;
 }
 
 .pr-mrp,
 .pr-price,
-.pr-quantity,
 .pr-bprice,
-.pr-tax,
 .pr-cgst,
 .pr-sgst,
 .pr-amount {
-  flex: 1;
+  text-align: right;
+  width: 8%;
 }
 
-.pr-gst {
-  flex: 2;
+.pr-igst {
+  text-align: right;
+  width: 16%;
 }
 
-.invoiceTotalRow {
-  border-top: 1px solid black;
+.invoiceTotalRow td {
+  background-color: #ddd;
+  padding: 5px;
+  border-right: 2px solid #ddd;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
-.summary {
-  flex-direction: column !important;
-  flex: 1;
+.empty-34 {
+  width: 34%;
+  font-weight: 100;
+  font-size: 12px;
 }
 
-
-.invoiceTotalRow div {
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.summary-empty,
+.empty-8,
 .summary-bprice,
 .summary-cgst,
 .summary-sgst,
 .summary-total {
-  flex: 1;
+  text-align: right;
+  width: 8%;
 }
 
-.summary-gst {
-  flex: 2
+.summary-igst {
+  width: 16%;
+  text-align: right;
 }
 
-.summary-totalWords {
-  flex: 1;
-  justify-content: right;
+.summary-totalInWords {
+  padding: 5px;
+  margin: 5px;
 }
 
+#disclaimer {
+  font-size: 10px;
+  font-weight: 100;
+  text-align: center;
+}
 
 @media print {
   h2 {
+    display: none;
+  }
+
+  .navBar {
     display: none;
   }
 }
@@ -198,6 +241,14 @@ input[type="checkbox"]:checked + label:after {
   top: 0px;
   left: 3px;
   color: #00539f;
+}
+
+.invoiceTopToolbelt {
+  display: flex;
+}
+
+.invoiceTopToolbelt div {
+  flex: 1;
 }
 
 .igst {
@@ -310,3 +361,47 @@ input[type="checkbox"]:checked + label:after {
 }
 
 /* Modal */
+
+
+/* Manage Product */
+
+.productInputHeaders {
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  background: #00539f;
+  color: white;
+}
+
+.headerAddButton {
+    flex: 7;
+}
+
+.headerTitles {
+    flex: 16;
+    display: flex;
+    flex-direction: row;
+}
+
+.headerTitles div {
+  flex: 1;
+}
+
+.productInputRow {
+  display: flex;
+  margin: 4px 8px;
+}
+
+.productInputRow > * {
+  flex: 1;
+  flex-direction: row;
+}
+
+.productInputRow #addNewButton {
+  flex: 2;
+}
+
+/* Manage Product */

@@ -69,41 +69,36 @@ class Create extends Component {
       } else trackInput.addRow();
     }
     if (e.keyCode === 40)
-      trackInput.highlightProductMatch(
-        "+",
-        this.props.productMatches.length
-      );
+      trackInput.highlightProductMatch("+", this.props.productMatches.length);
     if (e.keyCode === 38)
-      trackInput.highlightProductMatch(
-        "-",
-        this.props.productMatches.length
-      );
+      trackInput.highlightProductMatch("-", this.props.productMatches.length);
   }
 
   render() {
     return (
       <div className="createContainer">
-        <h2>
-          Aruna Invoice Genie
-          <input
-            type="button"
-            name="submit"
-            className="createInvoice"
-            value="Create Invoice"
-            onClick={this.createInvoice}
-          />
-        </h2>
-        <div className="igst">
-          <span>IGST</span>
-          <input
-            id="igst"
-            type="checkbox"
-            value="IGST"
-            placeholder="Product"
-            checked={this.props.input.igst}
-            onChange={trackInput.checkbox}
-          />
-          <label htmlFor="igst" />
+        <div className="invoiceTopToolbelt">
+          <div className="igst">
+            <span>IGST</span>
+            <input
+              id="igst"
+              type="checkbox"
+              value="IGST"
+              placeholder="Product"
+              checked={this.props.input.igst}
+              onChange={trackInput.checkbox}
+            />
+            <label htmlFor="igst" />
+          </div>
+          <div>
+            <input
+              type="button"
+              name="submit"
+              className="createInvoice"
+              value="Create Invoice"
+              onClick={this.createInvoice}
+            />
+          </div>
         </div>
         <div className="customerAddress">
           <div className="nameId">
@@ -199,7 +194,9 @@ class Create extends Component {
                   name="quantity"
                   data-row={row}
                   placeholder="Quantity"
-                  ref={input => { this.quantityInput = input; }}
+                  ref={input => {
+                    this.quantityInput = input;
+                  }}
                   value={this.props.input.rows[row].quantity}
                   onChange={this.trackInput(row, "textbox")}
                   onKeyUp={this.handleKeyUp}

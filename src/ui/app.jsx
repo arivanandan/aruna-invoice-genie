@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { Provider } from "react-redux";
+import NavBar from "./components/nav-bar";
 import Create from "./components/invoice/create";
 import Display from "./components/invoice/display";
 import Product from "./components/product";
@@ -10,6 +11,7 @@ export default store => () =>
       <div>
         <Router>
           <div>
+            <NavBar />
             <Switch>
               <Route exact path="/invoice/create" component={Create} />
               <Route exact path="/invoice/:id" component={Display} />

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "redux-jetpack";
+import Modal from "../modal";
 import * as productInput from "../../actions/product-input";
 import * as product from "../../actions/product";
 
@@ -8,6 +9,7 @@ class Product extends Component {
     super();
     this.modalAction = this.modalAction.bind(this);
     this.createProduct = this.createProduct.bind(this);
+    this.generateModalMessage = this.generateModalMessage.bind(this);
   }
 
   componentWillMount() {
@@ -44,6 +46,28 @@ class Product extends Component {
     productInput.closeModal();
   }
 
+  generateModalMessage() {
+    if (this.props.productManage.activeModal === "") return null;
+    if (this.props.productManage.activeModal === "delete-confirm")
+      return `Confirm Delete of ${this.props.productManage.remove.name}`;
+    if (this.props.productManage.activeModal === "update-confirm")
+      return `Confirm Update of ${this.props.products[
+        this.props.productManage.update.row
+      ].name}`;
+    if (this.props.productManage.activeModal === "delete-success")
+      return "Product Delete Successful";
+    if (this.props.productManage.activeModal === "delete-failure")
+      return "Product Deletion Failed";
+    if (this.props.productManage.activeModal === "update-success")
+      return "Product Update Successful";
+    if (this.props.productManage.activeModal === "update-failure")
+      return "Product Update Failed";
+    if (this.props.productManage.activeModal === "create-failure")
+      return "Product Creation Failed";
+    if (this.props.productManage.activeModal === "create-success")
+      return "Product Creation Success";
+  }
+
   render() {
     return (
       <div>
@@ -53,9 +77,11 @@ class Product extends Component {
           <div>Selling Price</div>
           <div>GST</div>
           <div>
-            <a href="#" onClick={this.initiateCreate}>
-              <i className="fa fa-plus" aria-hidden="true" />
-            </a>
+            <input
+              type="button"
+              value="Add Product"
+              onClick={this.initiateCreate}
+            />
           </div>
         </div>
         {Object.keys(this.props.productManage.insert).length !== 0 && (
@@ -177,15 +203,11 @@ class Product extends Component {
             </div>
           ))}
         {this.props.productManage.activeModal && (
-          <div>
-            {this.props.productManage.activeModal} modal is active
-            <input
-              type="button"
-              value="Close"
-              onClick={productInput.closeModal}
-            />
-            <input type="button" value="Action" onClick={this.modalAction} />
-          </div>
+          <Modal
+            message={this.generateModalMessage()}
+            okCallback={this.modalAction}
+            cancelCallback={productInput.closeModal}
+          />
         )}
       </div>
     );

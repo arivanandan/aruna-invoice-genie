@@ -3,7 +3,7 @@ import 'isomorphic-fetch'
 
 export async function get() {
   console.log('Get Products -> ')
-  const res = await fetch(`http://localhost:9000/api/product`)
+  const res = await fetch(`http://192.168.1.4:9000/api/product`)
   let resData
   if (res.status === 200) {
     resData = await res.json()
@@ -32,13 +32,20 @@ export async function create(data) {
       method: 'POST',
       body: JSON.stringify(data)
   }
-  const res = await fetch(`http://localhost:9000/api/product/create`, options)
-  const activeModal = res.status === 200 ? 'create-success' : 'create-failure'
-  updateState('productManage', productManage =>
-  ({
-    ...productManage,
-    activeModal
-  }))
+  const res = await fetch(`http://192.168.1.4:9000/api/product/create`, options)
+  try {
+    const activeModal = res.status === 200 ? 'create-success' : 'create-failure'
+    updateState('productManage', productManage =>
+    ({
+      ...productManage,
+      activeModal
+    }))
+  } catch(e) {
+    console.log('Product Update Error -> ', e)
+    updateState('productManage', productManage => (
+      { ...productManage, activeModal: "create-failure" }
+    ))
+  }
 }
 
 export async function update(data) {
@@ -51,21 +58,36 @@ export async function update(data) {
       method: 'POST',
       body: JSON.stringify(data)
   }
-  const res = await fetch(`http://localhost:9000/api/product/update`, options)
-  const activeModal = res.status === 200 ? "update-success" : "update-failure"
-  updateState('productManage', productManage =>
-  ({
-    ...productManage,
-    activeModal
-  }))
+  try {
+    const res = await fetch(`http://192.168.1.4:9000/api/product/update`, options)
+    console.log(res)
+    const activeModal = res.status === 200 ? "update-success" : "update-failure"
+    updateState('productManage', productManage =>
+    ({
+      ...productManage,
+      activeModal
+    }))
+  } catch(e) {
+    console.log('Product Update Error -> ', e)
+    updateState('productManage', productManage => (
+      { ...productManage, activeModal: "update-failure" }
+    ))
+  }
 }
 
 export async function remove(pid) {
-  const res = await fetch(`http://localhost:9000/api/product/delete/${pid}`)
-  const activeModal = res.status === 200 ? "delete-success" : "delete-failure"
-  updateState('productManage', productManage =>
-  ({
-    ...productManage,
-    activeModal
-  }))
+  const res = await fetch(`http://192.168.1.4:9000/api/product/delete/${pid}`)
+  try {
+    const activeModal = res.status === 200 ? "delete-success" : "delete-failure"
+    updateState('productManage', productManage =>
+    ({
+      ...productManage,
+      activeModal
+    }))
+  } catch (e) {
+    console.log('Product Remove Error -> ', e)
+    updateState('productManage', productManage => (
+      { ...productManage, activeModal: "delete-failure" }
+    ))
+  }
 }

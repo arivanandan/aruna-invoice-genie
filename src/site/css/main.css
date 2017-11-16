@@ -21,6 +21,11 @@ h2 {
   line-height: 52px;
 }
 
+#sname {
+  font-size: 22px;
+  margin: 5px;
+}
+
 .createInvoice {
   float: right;
   margin: 8px;
@@ -28,9 +33,13 @@ h2 {
 
 .invoiceHeader {
   display: flex;
-  flex-direction: column;
-  text-align: right;
+  justify-content: space-between;
   margin: 10px;
+}
+
+#sname {
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .addressBlock {
@@ -46,8 +55,6 @@ h2 {
 
 .productList div {
   display: flex;
-  flex-direction: row;
-  flex: 1;
   margin: 2px;
   padding: 1px;
 }
@@ -56,7 +63,75 @@ h2 {
   border-bottom: 1px solid black;
 }
 
-.productListRow {
+.productListRow div {
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.productListHeaders div {
+  align-items: center;
+  justify-content: center;
+}
+
+.pr-product {
+  justify-content: flex-start !important;
+  flex: 4;
+}
+
+.pr-mrp,
+.pr-price,
+.pr-quantity,
+.pr-bprice,
+.pr-tax,
+.pr-cgst,
+.pr-sgst,
+.pr-amount {
+  flex: 1;
+}
+
+.pr-gst {
+  flex: 2;
+}
+
+.invoiceTotalRow {
+  border-top: 1px solid black;
+}
+
+.summary {
+  flex-direction: column !important;
+  flex: 1;
+}
+
+
+.invoiceTotalRow div {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.summary-empty,
+.summary-bprice,
+.summary-cgst,
+.summary-sgst,
+.summary-total {
+  flex: 1;
+}
+
+.summary-gst {
+  flex: 2
+}
+
+.summary-totalWords {
+  flex: 1;
+  justify-content: right;
+}
+
+
+@media print {
+  h2 {
+    display: none;
+  }
 }
 
 /* Invoice Display */
@@ -70,7 +145,7 @@ h2 {
   background: #f3f3f3;
 }
 
-input[type=text] {
+input[type="text"] {
   border: solid 1px gray;
   border-radius: 5px;
   background-color: white;
@@ -80,7 +155,8 @@ input[type=text] {
   font-size: 14px;
 }
 
-input[type=button], .btn  {
+input[type="button"],
+.btn {
   height: 36px;
   -webkit-appearance: none;
   font-size: 14px;
@@ -89,14 +165,15 @@ input[type=button], .btn  {
   background: #00539f;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   display: none;
 }
 
-input[type=checkbox] + label {
+input[type="checkbox"] + label {
   background-color: #fafafa;
   border: 1px solid #cacece;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 12px;
   border-radius: 3px;
   display: inline-block;
@@ -104,15 +181,17 @@ input[type=checkbox] + label {
   vertical-align: middle;
 }
 
-input[type=checkbox]:checked + label {
+input[type="checkbox"]:checked + label {
   background-color: #e9ecee;
   border: 1px solid #adb8c0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
+    inset 15px 10px -12px rgba(255, 255, 255, 0.1);
   color: #99a1a7;
 }
 
-input[type=checkbox]:checked + label:after {
-  content: '\2714';
+input[type="checkbox"]:checked + label:after {
+  content: "\2714";
   font-size: 20px;
   left: 2px;
   position: absolute;
@@ -147,7 +226,7 @@ input[type=checkbox]:checked + label:after {
   display: flex;
 }
 
-.customerAddress .nameId input{
+.customerAddress .nameId input {
   flex: 1;
 }
 
@@ -155,7 +234,7 @@ input[type=checkbox]:checked + label:after {
   display: flex;
 }
 
-.customerAddress .address input{
+.customerAddress .address input {
   flex: 1;
 }
 
@@ -201,3 +280,33 @@ input[type=checkbox]:checked + label:after {
 }
 
 /* Invoice Create */
+
+/* Modal */
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+  z-index: 1;
+}
+
+#modal {
+  position: fixed;
+  top: 20%;
+  left: 30%;
+  width: 40%;
+  height: 20%;
+  background: white;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Modal */

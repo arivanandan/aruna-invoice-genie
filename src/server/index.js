@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import path from 'path'
-import * as r from './routes'
+import r from './routes'
 
 const app = express()
 
@@ -13,13 +13,13 @@ app.use(express.json())
 
 app.use(express.static(path.resolve(__dirname, '../..')))
 
-app.get('/api/invoice/:id', r.showInvoice)
-app.post('/api/invoice/create', r.createInvoice)
-app.get('/api/product/delete/:id', r.deleteProduct)
-app.post('/api/product/update', r.updateProduct)
-app.post('/api/product/create', r.createProduct)
-app.get('/api/product', r.getProducts)
-app.get('/api/customer', r.getCustomers)
+app.get('/api/invoice/:id', r.invoice.get)
+app.post('/api/invoice/create', r.invoice.put)
+app.get('/api/product/delete/:id', r.product.remove)
+app.post('/api/product/update', r.product.update)
+app.post('/api/product/create', r.product.put)
+app.get('/api/product', r.product.get)
+app.get('/api/customer', r.customer.get)
 
 
 app.get('*', (req, res) => {

@@ -120,3 +120,19 @@ export function addRow() {
     }
   ))
 }
+
+export function activateModal(message) {
+  console.log('Modal Message -> ', message)
+  updateState('modal', modal => ({
+    active: true,
+    message
+  }))
+}
+
+export function closeModal() {
+  console.log('Close Modal')
+  updateState('modal', modal => ({
+    active: false,
+    message: ''
+  }))
+}

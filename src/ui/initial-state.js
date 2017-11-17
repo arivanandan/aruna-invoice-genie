@@ -6,6 +6,10 @@
   customers: [],
   customerMatches: [],
   currentActive: "",
+  modal: {
+    active: false,
+    message: ""
+  },
   input: {
     igst: false,
     customer: {

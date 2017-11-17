@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router";
 import { connect } from "redux-jetpack";
+import Modal from "../modal";
 import * as trackInput from "../../actions/invoice-input";
 import * as invoice from "../../actions/invoice";
 import * as product from "../../actions/product";
@@ -54,7 +55,28 @@ class Create extends Component {
   }
 
   createInvoice() {
-    const status = invoice.create(this.props.input);
+    console.log('Check against null constraints')
+    const invalidData = this.props.input.rows.reduce(
+      (out, row) => {
+        console.log('Row data -> ', row)
+        return row.name === ""
+          ? out
+          : row.mrp ===  undefined || row.mrp === "" ||
+            row.quantity === undefined || row.quantity === "" ||
+            row.price === undefined || row.price === "" ||
+            row.gst === undefined || row.gst === ""
+            ? out.concat(row.name)
+            : out
+      },
+      []
+    );
+    console.log('Invalid Data -> ', invalidData)
+
+    return invalidData.length > 0
+    ? trackInput.activateModal(`Check if all fields of the product
+      ${invalidData.join(", ")}
+      are filled.`)
+    : invoice.create(this.props.input);
   }
 
   handleKeyUp(e) {
@@ -250,6 +272,13 @@ class Create extends Component {
           </div>
         </div>
         {this.props.redirect && <Redirect to={this.props.redirect} />}
+        {this.props.modal.active && (
+          <Modal
+            message={this.props.modal.message}
+            okCallback={trackInput.closeModal}
+            cancelCallback={trackInput.closeModal}
+          />
+        )}
       </div>
     );
   }

@@ -204,11 +204,11 @@ class Product extends Component {
               </div>
             </div>
           ))}
-        {this.props.productManage.activeModal && (
+        {this.props.modal.active && (
           <Modal
-            message={this.generateModalMessage()}
-            okCallback={this.modalAction}
-            cancelCallback={productInput.closeModal}
+            message={this.props.modal.message}
+            okCallback={trackInput.closeModal}
+            cancelCallback={trackInput.closeModal}
           />
         )}
       </div>

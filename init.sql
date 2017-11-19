@@ -34,5 +34,6 @@ CREATE TABLE invoiceproduct(
   invoiceid INT NOT NULL REFERENCES invoice(iid),
   productid INT NOT NULL REFERENCES product(pid),
   price FLOAT NOT NULL,
-  quantity INT NOT NULL
+  quantity INT NOT NULL,
+  usedgst INT NOT NULL
 );

@@ -20,6 +20,7 @@ app.post('/api/product/update', r.product.update)
 app.post('/api/product/create', r.product.put)
 app.get('/api/product', r.product.get)
 app.get('/api/customer', r.customer.get)
+app.get('/api/report/:from/:to', r.report.get)
 
 
 app.get('*', (req, res) => {

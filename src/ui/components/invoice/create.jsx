@@ -55,28 +55,29 @@ class Create extends Component {
   }
 
   createInvoice() {
-    console.log('Check against null constraints')
-    const invalidData = this.props.input.rows.reduce(
-      (out, row) => {
-        console.log('Row data -> ', row)
-        return row.name === ""
-          ? out
-          : row.mrp ===  undefined || row.mrp === "" ||
-            row.quantity === undefined || row.quantity === "" ||
-            row.price === undefined || row.price === "" ||
-            row.gst === undefined || row.gst === ""
-            ? out.concat(row.name)
-            : out
-      },
-      []
-    );
-    console.log('Invalid Data -> ', invalidData)
+    console.log("Check against null constraints");
+    const invalidData = this.props.input.rows.reduce((out, row) => {
+      console.log("Row data -> ", row);
+      return row.name === ""
+        ? out
+        : row.mrp === undefined ||
+          row.mrp === "" ||
+          row.quantity === undefined ||
+          row.quantity === "" ||
+          row.price === undefined ||
+          row.price === "" ||
+          row.gst === undefined ||
+          row.gst === ""
+          ? out.concat(row.name)
+          : out;
+    }, []);
+    console.log("Invalid Data -> ", invalidData);
 
     return invalidData.length > 0
-    ? trackInput.activateModal(`Check if all fields of the product
+      ? trackInput.activateModal(`Check if all fields of the product
       ${invalidData.join(", ")}
       are filled.`)
-    : invoice.create(this.props.input);
+      : invoice.create(this.props.input);
   }
 
   handleKeyUp(e) {
@@ -114,11 +115,18 @@ class Create extends Component {
           </div>
           <div>
             <input
+              type="date"
+              value={this.props.input.date}
+              onChange={trackInput.date}
+            />
+          </div>
+          <div>
+            <input
               type="button"
-              name="submit"
-              className="createInvoice"
-              value="Create Invoice"
-              onClick={this.createInvoice}
+              value="Add Item +"
+              id="addRowButton"
+              name="addRow"
+              onClick={trackInput.addRow}
             />
           </div>
         </div>
@@ -264,10 +272,10 @@ class Create extends Component {
           <div>
             <input
               type="button"
-              value="Add Item +"
-              className="addRow"
-              name="addRow"
-              onClick={trackInput.addRow}
+              name="submit"
+              id="createInvoiceButton"
+              value="Create Invoice"
+              onClick={this.createInvoice}
             />
           </div>
         </div>

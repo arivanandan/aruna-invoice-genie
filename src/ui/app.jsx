@@ -5,6 +5,7 @@ import NavBar from "./components/nav-bar";
 import Create from "./components/invoice/create";
 import Display from "./components/invoice/display";
 import Product from "./components/product";
+import Report from "./components/report";
 
 export default store => () =>
     <Provider store={store}>
@@ -16,6 +17,7 @@ export default store => () =>
               <Route exact path="/invoice/create" component={Create} />
               <Route exact path="/invoice/:id" component={Display} />
               <Route exact path="/product" component={Product} />
+              <Route exact path="/report" component={Report} />
               <Route path="/" component={Create} />
             </Switch>
           </div>

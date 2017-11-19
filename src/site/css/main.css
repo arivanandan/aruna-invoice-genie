@@ -27,6 +27,12 @@
   color: crimson;
 }
 
+@media print {
+  .navBar {
+    display: none;
+  }
+}
+
 /* Navigation Bar */
 
 /* Invoice Display*/
@@ -54,9 +60,23 @@ h2 {
   margin: 5px;
 }
 
-.createInvoice {
+#createInvoiceButton {
+  filter: grayscale(100%);
+}
+
+#addRowButton {
   float: right;
+  filter: grayscale(100%);
   margin: 8px;
+}
+
+#createInvoiceButton:focus,
+#createInvoiceButton:hover,
+#createInvoiceButton:active,
+#addRowButton:focus,
+#addRowButton:hover,
+#addRowButton:active {
+  filter: none;
 }
 
 .invoiceHeader {
@@ -99,7 +119,6 @@ tr > :first-child {
 .productListRow td {
   padding: 5px;
   border-right: 2px solid #ddd;
-
 }
 
 .pr-product {
@@ -167,12 +186,16 @@ tr > :first-child {
   text-align: center;
 }
 
-@media print {
-  h2 {
-    display: none;
-  }
+#printButton {
+  padding: 5px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
 
-  .navBar {
+@media print {
+  h2,
+  #printButton {
     display: none;
   }
 }
@@ -201,7 +224,6 @@ input[type="text"] {
 input[type="button"],
 .btn {
   height: 36px;
-  -webkit-appearance: none;
   font-size: 14px;
   font-weight: bold;
   color: white;
@@ -363,7 +385,6 @@ input[type="checkbox"]:checked + label:after {
 
 /* Modal */
 
-
 /* Manage Product */
 
 .productInputHeaders {
@@ -378,13 +399,13 @@ input[type="checkbox"]:checked + label:after {
 }
 
 .headerAddButton {
-    flex: 7;
+  flex: 7;
 }
 
 .headerTitles {
-    flex: 16;
-    display: flex;
-    flex-direction: row;
+  flex: 16;
+  display: flex;
+  flex-direction: row;
 }
 
 .headerTitles div {
@@ -406,3 +427,77 @@ input[type="checkbox"]:checked + label:after {
 }
 
 /* Manage Product */
+
+/* Report */
+
+#reportContainer {
+  margin: 15px;
+}
+
+#reportTable {
+  margin: 15px;
+  border: 1px solid #ddd;
+}
+
+#reportTableHeader {
+  display: flex;
+  background-color: #ddd;
+}
+
+#reportTableHeader div {
+  border: 1px solid white !important;
+  line-height: 200%;
+  text-align: center;
+}
+
+#reportTableHeader div {
+  flex: 1;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+#reportDataRow {
+  display: flex;
+  align-items: center;
+}
+
+#reportRow-date,
+#reportRow-invoice,
+#reportRow-cgstId {
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 5px;
+  flex: 5;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#reportRow-money {
+  flex: 27;
+}
+
+#reportMoneyRow {
+  display: flex;
+}
+
+#reportMoneyRow div {
+  flex: 1;
+  text-align: right;
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+#reportRow-gstRate {
+  text-align: center !important;
+}
+
+@media print {
+  #reportToolbelt {
+    display: none;
+  }
+}
+
+/* Report */

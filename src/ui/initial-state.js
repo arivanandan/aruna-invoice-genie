@@ -11,6 +11,7 @@
     message: ""
   },
   input: {
+    date: "",
     igst: false,
     customer: {
       cid: "",
@@ -40,5 +41,10 @@
       name: null
     },
     activeModal: ""
+  },
+  report: {
+    from: "",
+    to: "",
+    rows: []
   }
 };

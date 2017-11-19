@@ -17,6 +17,9 @@ class Display extends Component {
   render() {
     return this.props.invoice ? (
       <div className="invoiceContainer">
+        <div id="printButton">
+          <input type="button" value="Print" autoFocus onClick={window.print} />
+        </div>
         <div className="invoiceHeader">
           <div id="sname">{this.props.invoice.sname}</div>
           <div>

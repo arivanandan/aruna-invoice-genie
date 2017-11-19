@@ -12,7 +12,7 @@ export async function put(req, res) {
   const data = req.body.rows
 
   const columnSet = pgPromise().helpers.ColumnSet(
-    ['invoiceid', 'productid', 'price', 'quantity'],
+    ['invoiceid', 'productid', 'price', 'quantity', 'usedgst'],
     { table: 'invoiceproduct' }
   )
 
@@ -22,10 +22,10 @@ export async function put(req, res) {
     [c.cname, c.caddress, c.cgstid]
   )
 
-  const invoiceInsert = (igst, cid) => db.one(`INSERT INTO invoice(dt, igst, storeid, customerid)
-    VALUES(current_timestamp, $1, $2, $3)
+  const invoiceInsert = (date, igst, cid) => db.one(`INSERT INTO invoice(dt, igst, storeid, customerid)
+    VALUES($1, $2, $3, $4)
     RETURNING iid`,
-    [igst, 1, cid]
+    [date, igst, 1, cid]
   )
 
   const invoiceDataInsert = (data, invoiceid) =>
@@ -38,7 +38,7 @@ export async function put(req, res) {
   const rowDataConstructor = (data, invoiceid) =>
     data.map(row => Object.assign(
       {},
-      { invoiceid, productid: row.pid, price: row.price, quantity: row.quantity }
+      { invoiceid, productid: row.pid, price: row.price, quantity: row.quantity, usedgst: row.gst }
     ))
 
   const productAdder = r =>
@@ -72,7 +72,11 @@ export async function put(req, res) {
         : await customerInsert(input.customer)
     console.log('Customer Data -> ', customer)
 
-    const { iid } = await invoiceInsert(input.igst, customer.cid)
+    const date = input.date === "" ? new Date() : input.date
+
+    console.log('Date check -> ', date)
+
+    const { iid } = await invoiceInsert(date, input.igst, customer.cid)
 
     const verifiedData = await productIdGenerator(data)
     console.log('Modified Data', verifiedData)
@@ -100,12 +104,11 @@ export async function get(req, res) {
   const productGet = productid => db.one('SELECT * FROM product WHERE pid = $1', [productid])
   const calculateGst = (productList, igst) => productList.map(
     productRow => {
-      const unitPrice = productRow.gst === 0
-        ? productRow.price
-        : ((100 / (100 + productRow.gst)) * productRow.price)
-      const bprice = +(unitPrice * productRow.quantity).toFixed(2)
-      const amount = +(productRow.price * productRow.quantity).toFixed(2)
-      const gstAmount = +(amount - bprice).toFixed(2)
+      const amount = productRow.price * productRow.quantity
+      const bprice = productRow.gst === 0
+        ? amount
+        : ((100 / (100 + productRow.gst)) * amount)
+      const gstAmount = amount - bprice
       return igst
         ? {
           ...productRow,

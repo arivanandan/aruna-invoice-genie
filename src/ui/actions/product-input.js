@@ -72,9 +72,7 @@ export function purgeInsert() {
   }))
 }
 
-
 export function closeModal() {
-  console.log('Close Modal')
   updateState('productManage', productManage => ({
     ...productManage,
     activeModal: ""

@@ -96,9 +96,13 @@ h2 {
   margin: 10px;
 }
 
-.productList {
+#invoiceProductsContainer {
   padding: 10px;
+}
+
+.productList {
   width: 100%;
+  border-collapse: collapse;
 }
 
 #productListHeader {
@@ -106,23 +110,19 @@ h2 {
 }
 
 #productListHeader th {
-  border-top: 2px solid #ddd;
-  border-bottom: 2px solid #ddd;
+  border: 2px solid #cfcfcf;
   line-height: 200%;
   text-align: center;
-}
-
-tr > :first-child {
-  border-left: 2px solid #ddd;
+  padding: 5px;
 }
 
 .productListRow td {
   padding: 5px;
-  border-right: 2px solid #ddd;
+  border: solid #cfcfcf;
+  border-width: 0 2px 0 2px;
 }
 
 .pr-product {
-  border-right: 2px solid #ddd;
   width: 34%;
 }
 
@@ -150,9 +150,7 @@ tr > :first-child {
 .invoiceTotalRow td {
   background-color: #ddd;
   padding: 5px;
-  border-right: 2px solid #ddd;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border: 2px solid #cfcfcf;
 }
 
 .empty-34 {

@@ -54,12 +54,13 @@ export async function get(req, res) {
     const output = await Promise.all(
       invoices.map(async invoice => {
         const customer = await getCustomer(invoice.customerid)
+	const cgstid = customer ? customer.cgstid : null
         const invoiceProducts = await getInvoiceProducts(invoice.iid)
         const outputInvoiceProducts = calculateCategorizeGST(invoiceProducts)
         const gst = removeEmpty(outputInvoiceProducts)
         return {
           ...invoice,
-          cgstid: customer.cgstid,
+          cgstid,
           dt: invoice.dt.toLocaleString().substring(0, 10).split('-').reverse().join('-'),
           gst
         }

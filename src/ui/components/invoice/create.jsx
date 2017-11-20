@@ -6,6 +6,7 @@ import * as trackInput from "../../actions/invoice-input";
 import * as invoice from "../../actions/invoice";
 import * as product from "../../actions/product";
 import * as customer from "../../actions/customer";
+import * as modal from "../../actions/modal";
 
 class Create extends Component {
   constructor() {
@@ -74,7 +75,7 @@ class Create extends Component {
     console.log("Invalid Data -> ", invalidData);
 
     return invalidData.length > 0
-      ? trackInput.activateModal(`Check if all fields of the product
+      ? modal.open(`Check if all fields of the product
       ${invalidData.join(", ")}
       are filled.`)
       : invoice.create(this.props.input);
@@ -283,8 +284,8 @@ class Create extends Component {
         {this.props.modal.active && (
           <Modal
             message={this.props.modal.message}
-            okCallback={trackInput.closeModal}
-            cancelCallback={trackInput.closeModal}
+            okCallback={modal.close}
+            cancelCallback={modal.close}
           />
         )}
       </div>

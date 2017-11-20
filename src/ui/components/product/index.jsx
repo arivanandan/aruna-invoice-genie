@@ -3,6 +3,7 @@ import { connect } from "redux-jetpack";
 import Modal from "../modal";
 import * as productInput from "../../actions/product-input";
 import * as product from "../../actions/product";
+import * as modal from "../../actions/modal";
 
 class Product extends Component {
   constructor() {
@@ -68,6 +69,11 @@ class Product extends Component {
       return "Product Creation Success";
   }
 
+  closeModal() {
+    productInput.closeModal();
+    moda.close();
+  }
+
   render() {
     return (
       <div>
@@ -117,7 +123,12 @@ class Product extends Component {
               value={this.props.productManage.insert.gst}
               onChange={productInput.captureInsert}
             />
-            <input id="addNewButton" type="button" value="Create" onClick={this.createProduct} />
+            <input
+              id="addNewButton"
+              type="button"
+              value="Create"
+              onClick={this.createProduct}
+            />
           </div>
         )}
         {this.props.products &&
@@ -204,11 +215,11 @@ class Product extends Component {
               </div>
             </div>
           ))}
-        {this.props.modal.active && (
+        {this.props.productManage.activeModal && (
           <Modal
-            message={this.props.modal.message}
-            okCallback={trackInput.closeModal}
-            cancelCallback={trackInput.closeModal}
+            message={this.generateModalMessage()}
+            okCallback={this.modalAction}
+            cancelCallback={this.closeModal}
           />
         )}
       </div>

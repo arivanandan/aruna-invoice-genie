@@ -3,17 +3,13 @@
   "version": "0.0.1",
   "author": "Arivanandan",
   "scripts": {
-    "start": "npm run bs",
+    "start": "npm run bc && npm run postbuild && npm run bs",
     "dev": "webpack-dev-server",
     "lint": "eslint src",
     "prebuild": "rimraf dist",
-    "build": "webpack -p --config webpack.config.production.js",
-    "buildserver": "./build.sh",
-    "postbuild": "copyfiles src/site/index.html src/site/css/main.css dist",
-    "production": "npm run build && npm run postbuild && npm run bs",
-    "serve": "node dist/src/server",
-    "bs": "npm run buildserver && npm run serve",
-    "bc": "npm run build && npm run postbuild"
+    "bc": "webpack -p --config webpack.config.production.js",
+    "bs": "./build.sh && node dist/src/server",
+    "postbuild": "copyfiles src/site/index.html src/site/css/main.css dist"
   },
   "main": "dist/index.js",
   "dependencies": {

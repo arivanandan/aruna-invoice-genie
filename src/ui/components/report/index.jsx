@@ -51,7 +51,9 @@ class Report extends Component {
                     {this.props.report.rows[row].dt}
                   </div>
                   <div id="reportRow-invoice">
+                    <a href={`/invoice/${this.props.report.rows[row].iid}`}>
                     {this.props.report.rows[row].iid}
+                    </a>
                   </div>
                   <div id="reportRow-cgstId">
                     {this.props.report.rows[row].cgstid}

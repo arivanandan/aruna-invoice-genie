@@ -14,7 +14,7 @@ export async function create(data) {
       method: 'POST',
       body: JSON.stringify(data)
   }
-  const res = await fetch(`http://192.168.1.4:9000/api/invoice/create`, options)
+  const res = await fetch(`http://localhost:9000/api/invoice/create`, options)
   console.log('Create Invoice Action Result -> ', res)
   res.status === 200
     ? res.json().then(
@@ -25,7 +25,7 @@ export async function create(data) {
 
 export async function display(id) {
   console.log('Display invoice ', id)
-  const res = await fetch(`http://192.168.1.4:9000/api/invoice/${id}`)
+  const res = await fetch(`http://localhost:9000/api/invoice/${id}`)
   console.log('Display Invoice Action Result -> ', res)
   let resData
   if (res.status === 200) {

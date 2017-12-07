@@ -3,7 +3,7 @@ import 'isomorphic-fetch'
 
 export async function get() {
   console.log('Get Customers -> ')
-  const res = await fetch(`http://192.168.4.1:9000/api/customer`)
+  const res = await fetch(`http://localhost:9000/api/customer`)
   if (res.status === 200)
     res.json().then(
       resData => {

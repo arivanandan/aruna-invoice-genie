@@ -192,3 +192,16 @@ export async function get(req, res) {
     res.status(500)
   }
 }
+
+export async function del(req, res) {
+  const invoiceid = req.params.id
+  const invoiceDel = invoiceid => db.one('DELETE FROM invoice WHERE iid = $1', [invoiceid])
+
+  try {
+    const success = await invoiceDel(invoiceid)
+    res.status(200)
+  } catch(e) {
+    console.log('Invoice Delete Error -> ', e)
+    res.status(500)
+  }
+}

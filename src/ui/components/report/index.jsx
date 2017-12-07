@@ -2,8 +2,19 @@ import React, { Component } from "react";
 import { connect } from "redux-jetpack";
 import * as trackInput from "../../actions/report-input";
 import * as report from "../../actions/report";
+import * as invoice from "../../actions/invoice";
 
 class Report extends Component {
+  constructor(props) {
+    super(props)
+    this.deleteInvoice = this.deleteInvoice.bind(this)
+  }
+
+  deleteInvoice(id) {
+    invoice.remove(id)
+    setTimeout(function() { report.get(this.props.report.from, this.props.report.to) }, 1000);
+  }
+
   render() {
     return (
       <div id="reportContainer">
@@ -26,7 +37,8 @@ class Report extends Component {
             type="button"
             value="Generate Report"
             onClick={() =>
-              report.get(this.props.report.from, this.props.report.to)}
+              report.get(this.props.report.from, this.props.report.to)
+            }
           />
           <div id="printButton">
             <input type="button" value="Print" onClick={window.print} />
@@ -47,12 +59,18 @@ class Report extends Component {
               </div>
               {Object.keys(this.props.report.rows).map(row => (
                 <div id="reportDataRow">
+                  <div id="reportRow-delete">
+                    <input
+                      type="button"
+                      onClick={() => this.deleteInvoice(this.props.report.rows[row].iid)}
+                    />
+                  </div>
                   <div id="reportRow-date">
                     {this.props.report.rows[row].dt}
                   </div>
                   <div id="reportRow-invoice">
                     <a href={`/invoice/${this.props.report.rows[row].iid}`}>
-                    {this.props.report.rows[row].iid}
+                      {this.props.report.rows[row].iid}
                     </a>
                   </div>
                   <div id="reportRow-cgstId">
@@ -73,13 +91,15 @@ class Report extends Component {
                         {this.props.report.rows[row].igst && <div />}
                         {!this.props.report.rows[row].igst && (
                           <div>
-                            {(this.props.report.rows[row].gst[rate].gst / 2
+                            {(
+                              this.props.report.rows[row].gst[rate].gst / 2
                             ).toFixed(2)}
                           </div>
                         )}
                         {!this.props.report.rows[row].igst && (
                           <div>
-                            {(this.props.report.rows[row].gst[rate].gst / 2
+                            {(
+                              this.props.report.rows[row].gst[rate].gst / 2
                             ).toFixed(2)}
                           </div>
                         )}

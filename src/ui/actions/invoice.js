@@ -34,3 +34,12 @@ export async function display(id) {
     updateState('invoice', invoice => resData)
   } else console.log('No data found')
 }
+
+export async function remove(id) {
+  console.log('Delete invoice ', id)
+  const res = await fetch(`http://localhost:9000/api/invoice/delete/${id}`)
+  console.log('Delete Invoice Action Result -> ', res)
+  if (res.status === 200) {
+    updateState('invoice', invoice => resData)
+  } else console.log('Record not found')
+}

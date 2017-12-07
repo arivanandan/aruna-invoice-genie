@@ -493,7 +493,7 @@ input[type="checkbox"]:checked + label:after {
 }
 
 @media print {
-  #reportToolbelt {
+  #reportToolbelt, #reportRow-delete {
     display: none;
   }
 }

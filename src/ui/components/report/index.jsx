@@ -10,7 +10,8 @@ class Report extends Component {
     this.deleteInvoice = this.deleteInvoice.bind(this)
   }
 
-  deleteInvoice(id) {
+  deleteInvoice(row) {
+    const id = this.props.report.rows[row].iid
     invoice.remove(id)
     setTimeout(function() { report.get(this.props.report.from, this.props.report.to) }, 1000);
   }
@@ -62,7 +63,7 @@ class Report extends Component {
                   <div id="reportRow-delete">
                     <input
                       type="button"
-                      onClick={() => this.deleteInvoice(this.props.report.rows[row].iid)}
+                      onClick={() => this.deleteInvoice(row)}
                     />
                   </div>
                   <div id="reportRow-date">

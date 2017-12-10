@@ -155,8 +155,7 @@ h2 {
 
 .empty-34 {
   width: 34%;
-  font-weight: 100;
-  font-size: 12px;
+  font-weight: 600;
 }
 
 .empty-8,
@@ -443,15 +442,10 @@ input[type="checkbox"]:checked + label:after {
 }
 
 #reportTableHeader div {
-  border: 1px solid white !important;
+  border: 1px solid #cfcfcf;
   line-height: 200%;
-  text-align: center;
-}
-
-#reportTableHeader div {
   flex: 1;
   text-align: center;
-  border: 1px solid #ddd;
   padding: 5px;
 }
 
@@ -490,6 +484,27 @@ input[type="checkbox"]:checked + label:after {
 
 #reportRow-gstRate {
   text-align: center !important;
+}
+
+
+.reportTableSummary {
+  display: flex;
+  background-color: #ddd;
+}
+
+.reportTableSummary div {
+  border: 1px solid #cfcfcf;
+  line-height: 200%;
+  flex: 1;
+  text-align: right;
+  padding: 5px;
+}
+
+.reportTableSummary > .noBorder {
+  border: 0;
+  margin: 1px;
+  font-weight: 600;
+  text-align: left;
 }
 
 @media print {

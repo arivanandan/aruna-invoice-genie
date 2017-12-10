@@ -45,6 +45,9 @@
   report: {
     from: "",
     to: "",
-    rows: []
+    out: {
+      rows: [],
+      total: 0
+    }
   }
 };

@@ -27,23 +27,23 @@ export async function get(req, res) {
           ? total
           : ((100 / (100 + ip.usedgst)) * total)
         const gst = total - baseAmount + acc[ip.usedgst].gst
-        const amount = baseAmount + acc[ip.usedgst].amount
-        return { ...acc, [ip.usedgst]: { gst, amount } }
+        // const amount = baseAmount + acc[ip.usedgst].amount
+        return { ...acc, [ip.usedgst]: { gst, total } }
       },
       {
-        0: { gst: 0, amount: 0 },
-        5: { gst: 0, amount: 0 },
-        12: { gst: 0, amount: 0 },
-        18: { gst: 0, amount: 0 },
-        28: { gst: 0, amount: 0 }
+        0: { gst: 0, total: 0 },
+        5: { gst: 0, total: 0 },
+        12: { gst: 0, total: 0 },
+        18: { gst: 0, total: 0 },
+        28: { gst: 0, total: 0 }
       }
     )
 
   const removeEmpty = obj => Object.keys(obj).reduce(
-    (acc, cur) => obj[cur].amount
+    (acc, cur) => obj[cur].total
       ? { ...acc, [cur]: {
         gst: obj[cur].gst,
-        amount: obj[cur].amount.toFixed(2)
+        total: obj[cur].total
       } }
       : acc
     , {}
@@ -54,7 +54,7 @@ export async function get(req, res) {
     const output = await Promise.all(
       invoices.map(async invoice => {
         const customer = await getCustomer(invoice.customerid)
-	const cgstid = customer ? customer.cgstid : null
+        const cgstid = customer ? customer.cgstid : null
         const invoiceProducts = await getInvoiceProducts(invoice.iid)
         const outputInvoiceProducts = calculateCategorizeGST(invoiceProducts)
         const gst = removeEmpty(outputInvoiceProducts)

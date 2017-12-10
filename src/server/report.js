@@ -22,11 +22,12 @@ export async function get(req, res) {
   const calculateCategorizeGST = invoiceProducts =>
     invoiceProducts.reduce(
       (acc, ip) => {
-        const total = ip.price * ip.quantity
+        const baseTotal = ip.price * ip.quantity
         const baseAmount = ip.usedgst === 0
-          ? total
-          : ((100 / (100 + ip.usedgst)) * total)
-        const gst = total - baseAmount + acc[ip.usedgst].gst
+          ? baseTotal
+          : ((100 / (100 + ip.usedgst)) * baseTotal)
+        const gst = baseTotal - baseAmount + acc[ip.usedgst].gst
+        const total = baseTotal + acc[ip.usedgst].total
         // const amount = baseAmount + acc[ip.usedgst].amount
         return { ...acc, [ip.usedgst]: { gst, total } }
       },

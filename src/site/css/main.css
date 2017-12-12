@@ -460,7 +460,7 @@ input[type="checkbox"]:checked + label:after {
   text-align: center;
   border: 1px solid #ddd;
   padding: 5px;
-  flex: 5;
+  flex: 4;
   align-self: stretch;
   display: flex;
   align-items: center;
@@ -468,7 +468,7 @@ input[type="checkbox"]:checked + label:after {
 }
 
 #reportRow-money {
-  flex: 27;
+  flex: 26;
 }
 
 #reportMoneyRow {

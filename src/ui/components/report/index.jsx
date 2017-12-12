@@ -54,11 +54,12 @@ class Report extends Component {
                 <div>Date</div>
                 <div>Invoice</div>
                 <div>GST No.</div>
+                <div>Amount</div>
                 <div>GST Rate</div>
                 <div>CGST</div>
                 <div>SGST</div>
                 <div>IGST</div>
-                <div>Amount</div>
+                <div>Total</div>
               </div>
               {Object.keys(rows).map(row => (
                 <div id="reportDataRow">
@@ -76,6 +77,9 @@ class Report extends Component {
                   <div id="reportRow-money">
                     {Object.keys(rows[row].gst).map(rate => (
                       <div id="reportMoneyRow">
+                        <div>
+                          {(rows[row].gst[rate].amount).toFixed(2)}
+                        </div>
                         <div id="reportRow-gstRate">{rate}</div>
                         {rows[row].igst && (
                           <div>
@@ -115,6 +119,7 @@ class Report extends Component {
                 <div className="noBorder" />
                 <div className="noBorder" />
                 <div className="noBorder" />
+                <div>{total.amount.toFixed(2)}</div>
                 <div>{(total.gst / 2).toFixed(2)}</div>
                 <div>{(total.gst / 2).toFixed(2)}</div>
                 <div>{total.igst.toFixed(2)}</div>

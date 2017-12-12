@@ -118,8 +118,8 @@ class Report extends Component {
                 <div className="noBorder">Total</div>
                 <div className="noBorder" />
                 <div className="noBorder" />
-                <div className="noBorder" />
                 <div>{total.amount.toFixed(2)}</div>
+                <div className="noBorder" />
                 <div>{(total.gst / 2).toFixed(2)}</div>
                 <div>{(total.gst / 2).toFixed(2)}</div>
                 <div>{total.igst.toFixed(2)}</div>

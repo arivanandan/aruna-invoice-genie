@@ -28,15 +28,15 @@ export async function get(req, res) {
           : ((100 / (100 + ip.usedgst)) * baseTotal)
         const gst = baseTotal - baseAmount + acc[ip.usedgst].gst
         const total = baseTotal + acc[ip.usedgst].total
-        // const amount = baseAmount + acc[ip.usedgst].amount
-        return { ...acc, [ip.usedgst]: { gst, total } }
+        const amount = baseAmount + acc[ip.usedgst].amount
+        return { ...acc, [ip.usedgst]: { gst, total, amount } }
       },
       {
-        0: { gst: 0, total: 0 },
-        5: { gst: 0, total: 0 },
-        12: { gst: 0, total: 0 },
-        18: { gst: 0, total: 0 },
-        28: { gst: 0, total: 0 }
+        0: { gst: 0, total: 0, amount: 0 },
+        5: { gst: 0, total: 0, amount: 0 },
+        12: { gst: 0, total: 0, amount: 0 },
+        18: { gst: 0, total: 0, amount: 0 },
+        28: { gst: 0, total: 0, amount: 0 }
       }
     )
 
@@ -44,7 +44,8 @@ export async function get(req, res) {
     (acc, cur) => obj[cur].total
       ? { ...acc, [cur]: {
         gst: obj[cur].gst,
-        total: obj[cur].total
+        total: obj[cur].total,
+        amount: obj[cur].amount
       } }
       : acc
     , {}

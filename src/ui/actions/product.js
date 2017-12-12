@@ -1,9 +1,10 @@
 import { getState, updateState } from 'redux-jetpack'
+import server from '../constants'
 import 'isomorphic-fetch'
 
 export async function get() {
   console.log('Get Products -> ')
-  const res = await fetch(`http://localhost:9000/api/product`)
+  const res = await fetch(`${server()}/api/product`)
   let resData
   if (res.status === 200) {
     resData = await res.json()
@@ -32,7 +33,7 @@ export async function create(data) {
       method: 'POST',
       body: JSON.stringify(data)
   }
-  const res = await fetch(`http://localhost:9000/api/product/create`, options)
+  const res = await fetch(`${server()}/api/product/create`, options)
   try {
     const activeModal = res.status === 200 ? 'create-success' : 'create-failure'
     updateState('productManage', productManage =>
@@ -59,7 +60,7 @@ export async function update(data) {
       body: JSON.stringify(data)
   }
   try {
-    const res = await fetch(`http://localhost:9000/api/product/update`, options)
+    const res = await fetch(`${server()}/api/product/update`, options)
     console.log(res)
     const activeModal = res.status === 200 ? "update-success" : "update-failure"
     updateState('productManage', productManage =>
@@ -76,7 +77,7 @@ export async function update(data) {
 }
 
 export async function remove(pid) {
-  const res = await fetch(`http://localhost:9000/api/product/delete/${pid}`)
+  const res = await fetch(`${server()}/api/product/delete/${pid}`)
   try {
     const activeModal = res.status === 200 ? "delete-success" : "delete-failure"
     updateState('productManage', productManage =>

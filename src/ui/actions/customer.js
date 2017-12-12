@@ -1,9 +1,10 @@
 import { getState, updateState } from 'redux-jetpack'
+import server from '../constants'
 import 'isomorphic-fetch'
 
 export async function get() {
   console.log('Get Customers -> ')
-  const res = await fetch(`http://localhost:9000/api/customer`)
+  const res = await fetch(`${server()}/api/customer`)
   if (res.status === 200)
     res.json().then(
       resData => {

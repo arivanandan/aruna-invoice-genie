@@ -8,6 +8,7 @@ export async function get() {
   let resData
   if (res.status === 200) {
     resData = await res.json()
+    console.log('Get products response -> ', resData)
     updateState('products', products => resData.products)
   } else console.log('No data found')
 }

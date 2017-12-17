@@ -3,6 +3,8 @@ import converter from 'number-to-words'
 require("babel-core/register")
 require("babel-polyfill")
 
+import product from './database-communicators/product'
+
 export async function put(req, res) {
   console.log('Create invoice')
   console.log(req.query)
@@ -41,16 +43,8 @@ export async function put(req, res) {
       { invoiceid, productid: row.pid, price: row.price, quantity: row.quantity, usedgst: row.gst }
     ))
 
-  const productAdder = r =>
-    db.one(
-      `INSERT INTO product(name, mrp, price, gst)
-      VALUES($1, $2, $3, $4)
-      RETURNING pid`,
-      [r.name, r.mrp, r.price, r.gst]
-    )
-
   const productIdAdder = async row => {
-    const productAdderResult = await productAdder(row)
+    const productAdderResult = await product.put(row)
     const pid = productAdderResult.pid
     return { ...row, pid }
   }

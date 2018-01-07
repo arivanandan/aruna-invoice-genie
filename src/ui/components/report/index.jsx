@@ -16,9 +16,28 @@ class Report extends Component {
   //   setTimeout(function() { report.get(this.props.report.from, this.props.report.to) }, 1000);
   // }
 
+  downloadCsv(report, total) {
+    const csvContent = report.length > 0 &&
+    report.reduce((csv, r) =>
+      `${csv}
+      ${
+        Object.keys(r.gst).map(gst => r.igst
+          ? `"${r.dt}","${r.iid}","${r.cgstid || ""}","${r.gst[gst].amount.toFixed(2)}","${gst}","","","${(r.gst[gst].gst).toFixed(2)}","${r.gst[gst].total.toFixed(2)}"`
+          : `"${r.dt}","${r.iid}","${r.cgstid || ""}","${r.gst[gst].amount.toFixed(2)}","${gst}","${(r.gst[gst].gst / 2).toFixed(2)}","${(r.gst[gst].gst / 2).toFixed(2)}","","${r.gst[gst].total.toFixed(2)}"`
+        ).join("\r\n")
+      }`,
+      'data:text/csv;charset=utf-8,"Date","Invoice","GST No.","Amount","GST Rate","CGST","SGST","IGST","Total"'
+    ) + "\r\n" + `"Total","","","${total.amount.toFixed(2)}","","${(total.gst / 2).toFixed(2)}","${(total.gst / 2).toFixed(2)}","${total.igst.toFixed(2)}","${total.total.toFixed(2)}"`;
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "aruna.csv");
+    document.body.appendChild(link); // Required for FF
+    link.click();
+  }
+
   render() {
     const { rows, total } = this.props.report.out
-    console.log(this.props.report)
     return (
       <div id="reportContainer">
         <div id="reportToolbelt">
@@ -43,8 +62,11 @@ class Report extends Component {
               report.get(this.props.report.from, this.props.report.to)
             }
           />
-          <div id="printButton">
+          {/*<div id="printButton">
             <input type="button" value="Print" onClick={window.print} />
+          </div>*/}
+          <div id="printButton">
+            <input type="button" value="Download CSV" onClick={() => this.downloadCsv(rows, total)} />
           </div>
         </div>
         {rows.length > 0 && (

@@ -189,7 +189,11 @@ class Product extends Component {
                     this.props.productManage.update.row === row ? false : true
                   }
                   onChange={productInput.captureUpdate}
-                  value={p.gst}
+                  value={
+                    this.props.productManage.update.row === row
+                      ? this.props.productManage.update.gst
+                      : p.gst
+                  }
                 />
                 {this.props.productManage.update.row === row ? (
                   <input

@@ -1,14 +1,17 @@
 import { pgPromise, db } from '../db'
-// require("babel-core/register")
-// require("babel-polyfill")
 
-export async function get(productid) {
+const customerGet = productid => db.manyOrNone('SELECT * FROM customer')
+const customerPut = db.one(`INSERT INTO customer(cname, caddress, cgstid)
+VALUES($1, $2, $3)
+RETURNING cid`,
+[c.cname, c.caddress, c.cgstid]
+)
+
+export async function get(customerid) {
   console.log('Get Customers')
 
-  const cGet = productid => db.manyOrNone('SELECT * FROM customer')
-
   try {
-    const customers = await cGet(productid)
+    const customers = await customerGet(customerid)
     console.log('Customers  -> ', customers)
     return { success: true, customers }
   } catch(e) {
@@ -19,14 +22,8 @@ export async function get(productid) {
 
 
 export async function put(c) {
-  const cPut = db.one(`INSERT INTO customer(cname, caddress, cgstid)
-    VALUES($1, $2, $3)
-    RETURNING cid`,
-    [c.cname, c.caddress, c.cgstid]
-  )
-
   try {
-    const cid = await cPut(c)
+    const cid = await customerPut(c)
     console.log('New customer  -> ', cid)
     return { success: true, cid }
   } catch(error) {

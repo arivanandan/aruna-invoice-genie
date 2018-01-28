@@ -25,7 +25,7 @@ export async function update(req, res) {
   return success ? res.status(200) : res.status(500)
 }
 
-export async function remove(req, res) {
+export async function del(req, res) {
   console.log('Delete Product')
 
   const { success } = await product.remove(req.params.id)

@@ -104,7 +104,7 @@ export async function put(req, res) {
     const verifiedData = await productIdGenerator(data)
     console.log('Modified Data', verifiedData)
 
-    const batchRowInsert = await invoiceDataInsert.put(verifiedData, iid)
+    const batchRowInsert = await invoiceDataInsert(verifiedData, iid)
     console.log('Invoice Products Populated', batchRowInsert)
 
     res.status(200).json({ iid })

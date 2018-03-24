@@ -5,6 +5,7 @@ import * as invoice from './database-communicators/invoice'
 import * as invoiceProduct from './database-communicators/invoice-product'
 import * as customer from './database-communicators/customer'
 import * as product from './database-communicators/product'
+import * as store from './database-communicators/store'
 
 const calculateGst = (productList, igst) => productList.map(
   productRow => {
@@ -119,11 +120,8 @@ export async function get(req, res) {
   console.log('Show Invoice')
   console.log(req.params.id)
 
-  const invoiceListGet = invoiceid => db.many('SELECT * FROM invoiceproduct WHERE invoiceid = $1', [invoiceid])
-  const productGet = productid => db.one('SELECT * FROM product WHERE pid = $1', [productid])
-
   try {
-    const { error: invoiceGetError, invoice: i } = await invoiceGet(req.params.id)
+    const { error: invoiceGetError, invoice: i } = await invoice.get(req.params.id)
     if (invoiceGetError) throw(invoiceGetError)
     const { iid, dt, igst, storeid, customerid } = i
     console.log('Invoice Get -> ', iid, dt, storeid, customerid)
@@ -134,7 +132,8 @@ export async function get(req, res) {
 
     const detailedProductList = await Promise.all(
       invoiceProducts.map(async p => {
-        const productData = await product.get(p.productid)
+        const { error: productError, product: productData } = await product.get(p.productid)
+        if (productError) throw(productError)
         delete productData.price
         console.log('Product Data -> ', productData)
         return { ...p, ...productData }
@@ -145,9 +144,9 @@ export async function get(req, res) {
     const productList = calculateGst(detailedProductList, igst)
     console.log('Complete Product List -> ', productList)
 
-    const { store, storeGetError: error } = await storeGet(storeid)
+    const { store: storeDetails, error: storeGetError } = await store.get(storeid)
     if (storeGetError) throw(storeGetError)
-    const { sname, saddress, sgstid } = store
+    const { sname, saddress, sgstid } = storeDetails
     console.log('Store Get -> ', sname, saddress, sgstid)
 
     let cname: null, caddress: null, cgstid: null, customerGetError, customer

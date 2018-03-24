@@ -8,6 +8,7 @@ const putProduct = p =>
     [p.name, p.mrp, p.price, p.gst]
   )
 const getProducts = () => db.manyOrNone('SELECT * FROM product WHERE active = TRUE')
+const getProduct = productid => db.one('SELECT * FROM product WHERE pid = $1', [productid])
 const updateProduct = p => db.oneOrNone(
   `UPDATE product
   SET name = $2, mrp = $3, price = $4, gst = $5
@@ -23,8 +24,22 @@ const deleteProduct = id => db.oneOrNone(
   [id]
 )
 
+export async function get(productId) {
+  console.log('Get Product by ID')
+
+  try {
+    const product = await getProduct(productId)
+    console.log('Products -> ', product)
+    return { success: true, product }
+  } catch(error) {
+    console.log('Find Product Match Error -> ', error)
+    return { error }
+  }
+}
+
+
 export async function getAll() {
-  console.log('Find Product Match')
+  console.log('Get Product Matches')
 
   try {
     const products = await getProducts()

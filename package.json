@@ -8,7 +8,7 @@
     "lint": "eslint src",
     "prebuild": "rimraf dist",
     "bc": "webpack -p --config webpack.config.production.js",
-    "bs": "./build.sh && node dist/src/server",
+    "bs": "./build.sh && nodemon dist/src/server",
     "postbuild": "copyfiles src/site/index.html src/site/css/main.css dist"
   },
   "main": "dist/index.js",
@@ -41,6 +41,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "copyfiles": "^1.2.0",
     "css-loader": "^0.28.4",
+    "nodemon": "^1.17.2",
     "react-hot-loader": "^3.1.3",
     "rimraf": "^2.6.1",
     "source-map-support": "^0.4.8",

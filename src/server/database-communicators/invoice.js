@@ -7,6 +7,13 @@ const invoicePut = (date, igst, storeid = 1, cid) => db.one(`INSERT INTO invoice
   [date, igst, storeid, cid]
 )
 const invoiceDel = invoiceid => db.one('DELETE FROM invoice WHERE iid = $1', [invoiceid])
+const invoiceUpdate = (date, iid, igst, storeid = 1, cid) =>
+  db.one(`UPDATE invoice
+    SET dt = $2, igst = $3, storeid = $4, customerid = $5
+    WHERE iid = $1
+    RETURNING iid`,
+    [iid, date, igst, storeid, cid]
+)
 
 export async function get(invoiceId) {
   try {
@@ -27,6 +34,17 @@ export async function put(date, igst, cid, storeid) {
     return { success: true, invoice }
   } catch(error) {
     console.log('Put Invoice Error -> ', error)
+    return { error }
+  }
+}
+
+export async function update(date, iid, igst, cid, storeid) {
+  try {
+    const invoice = await invoiceUpdate(date, iid, igst, storeid, cid)
+    console.log('Update Invoice  -> ', invoice)
+    return { success: true, invoice }
+  } catch(error) {
+    console.log('Update Invoice Error -> ', error)
     return { error }
   }
 }

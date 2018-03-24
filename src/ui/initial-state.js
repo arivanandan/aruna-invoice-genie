@@ -1,4 +1,4 @@
-  export default {
+export default {
   redirect: null,
   highlightProductMatch: null,
   products: [],

@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "redux-jetpack";
+import { Link } from "react-router-dom";
 import * as invoice from "../../actions/invoice";
+import * as redirect from "../../actions/redirect";
 
 class Display extends Component {
   componentWillMount() {
     invoice.display(this.props.match.params.id);
+    redirect.reset();
   }
 
   camelize(sentence) {
@@ -20,6 +23,9 @@ class Display extends Component {
         <div id="printButton">
           <input type="button" value="Print" autoFocus onClick={window.print} />
         </div>
+        <Link to={`/invoice/edit/${this.props.invoice.iid}`}>
+          <div id="editButton">Edit</div>
+        </Link>
         <div className="invoiceHeader">
           <div id="sname">{this.props.invoice.sname}</div>
           <div>

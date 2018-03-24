@@ -190,9 +190,24 @@ h2 {
   right: 0;
 }
 
+#editButton {
+  background: #00539f;
+  padding: 10px;
+  margin: 5px;
+  position: fixed;
+  bottom: 0;
+  right: 70;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
 @media print {
   h2,
   #printButton {
+    display: none;
+  }
+  #editButton {
     display: none;
   }
 }

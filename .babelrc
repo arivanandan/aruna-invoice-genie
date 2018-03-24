@@ -1,9 +1,15 @@
 {
   "sourceMaps": true,
   "presets": ["react", "env"],
-  "plugins": ["transform-object-rest-spread",
-    ["transform-runtime", {
-      "polyfill": false,
-      "regenerator": true
-      }]]
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    [
+      "transform-runtime",
+      {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ]
+  ]
 }

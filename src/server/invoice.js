@@ -49,7 +49,7 @@ const twoDecimal = obj => Object.keys(obj).reduce((acc, cur) => {
   return acc;
 }, {});
 
-export async function put(req, res) {
+export async function put(req, res, update) {
   console.log('Create invoice')
   console.log(req.query)
   console.log(req.body)
@@ -77,17 +77,34 @@ export async function put(req, res) {
     { table: 'invoiceproduct' }
   )
 
-  const rowDataConstructor = (data, invoiceid) =>
-  data.map(row => Object.assign(
-    {},
-    { invoiceid, productid: row.pid, price: row.price, quantity: row.quantity, usedgst: row.gst }
-  ))
+  const updateColumnSet = pgPromise().helpers.ColumnSet(
+    ['ipid', 'invoiceid', 'productid', 'price', 'quantity', 'usedgst'],
+    { table: 'invoiceproduct' }
+  )
+
+  const rowDataConstructor = (data, invoiceid, update) =>
+    update === true
+      ? data.map(row => Object.assign(
+          {},
+          { ipid: row.ipid, invoiceid, productid: row.pid, price: row.price, quantity: row.quantity, usedgst: row.gst }
+        ))
+      : data.map(row => Object.assign(
+          {},
+          { invoiceid, productid: row.pid, price: row.price, quantity: row.quantity, usedgst: row.gst }
+        ))
 
   const invoiceDataInsert = (data, invoiceid) =>
   db.any(
     pgPromise().helpers.insert(
       rowDataConstructor(data, invoiceid), columnSet
-    ) + 'RETURNING ipid'
+    ) + ' RETURNING ipid'
+  )
+
+  const invoiceDataUpdate = (data, invoiceid) =>
+  db.any(
+    pgPromise().helpers.update(
+      rowDataConstructor(data, invoiceid, true), updateColumnSet
+    ) + ' WHERE v.ipid = t.ipid RETURNING t.ipid'
   )
 
   try {
@@ -100,12 +117,18 @@ export async function put(req, res) {
 
     const date = input.date === "" ? new Date() : input.date
 
-    const { iid } = await invoice.put(date, input.igst, customer.cid)
+    const { invoice: invoiceData } = update === true
+      ? await invoice.update(date, input.iid, input.igst, customer.cid, 1)
+      : await invoice.put(date, input.igst, customer.cid, 1)
+    const { iid } = invoiceData
+    console.log('Successful invoice insert/update -> ', iid)
 
     const verifiedData = await productIdGenerator(data)
     console.log('Modified Data', verifiedData)
 
-    const batchRowInsert = await invoiceDataInsert(verifiedData, iid)
+    const batchRowInsert = update === true
+      ?  await invoiceDataUpdate(verifiedData, iid)
+      : await invoiceDataInsert(verifiedData, iid)
     console.log('Invoice Products Populated', batchRowInsert)
 
     res.status(200).json({ iid })
@@ -114,7 +137,6 @@ export async function put(req, res) {
     res.status(500)
   }
 }
-
 
 export async function get(req, res) {
   console.log('Show Invoice')
@@ -179,23 +201,14 @@ export async function get(req, res) {
   }
 }
 
+export async function update(req, res) {
+  put(req, res, true);
+}
+
 export async function del(req, res) {
   const invoiceid = req.params.id
   console.log('Delete Invoice')
 
   const { success } = await invoice.del(req.params.id)
   return success ? res.status(200) : res.status(500)
-}
-
-export async function update(req, res) {
-  const invoiceid = req.params.id
-  const invoiceUpdate = invoiceid => db.one('DELETE FROM invoice WHERE iid = $1', [invoiceid])
-
-  try {
-    const success = await invoiceUpdate(invoiceid)
-    res.status(200)
-  } catch(e) {
-    console.log('Invoice Update Error -> ', e)
-    res.status(500)
-  }
 }

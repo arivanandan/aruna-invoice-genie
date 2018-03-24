@@ -9,12 +9,6 @@ import * as customer from "../../actions/customer";
 import * as modal from "../../actions/modal";
 
 class Create extends Component {
-  constructor() {
-    super();
-    this.createInvoice = this.createInvoice.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
-  }
-
   componentWillMount() {
     if (this.props.match.params.id) invoice.edit(this.props.match.params.id);
     product.get();
@@ -56,7 +50,7 @@ class Create extends Component {
     customer.clearMatches();
   }
 
-  createInvoice() {
+  createInvoice = () => {
     console.log("Check against null constraints");
     const invalidData = this.props.input.rows.reduce((out, row) => {
       console.log("Row data -> ", row);
@@ -79,10 +73,12 @@ class Create extends Component {
       ? modal.open(`Check if all fields of the product
       ${invalidData.join(", ")}
       are filled.`)
-      : invoice.create(this.props.input);
+      : this.props.match.params.id
+        ? invoice.create(this.props.input, true)
+        : invoice.create(this.props.input);
   }
 
-  handleKeyUp(e) {
+  handleKeyUp = e => {
     console.log("handleKeyUp", e.keycode);
     if (e.keyCode === 13) {
       if (this.props.highlightProductMatch !== null) {
@@ -276,7 +272,7 @@ class Create extends Component {
               type="button"
               name="submit"
               id="createInvoiceButton"
-              value="Create Invoice"
+              value={`${this.props.match.params.id ? "Edit" : "Create" } Invoice`}
               onClick={this.createInvoice}
             />
           </div>

@@ -1,10 +1,10 @@
 import { pgPromise, db } from '../db'
 
 const customerGet = productid => db.manyOrNone('SELECT * FROM customer')
-const customerPut = db.one(`INSERT INTO customer(cname, caddress, cgstid)
-VALUES($1, $2, $3)
-RETURNING cid`,
-[c.cname, c.caddress, c.cgstid]
+const customerPut = c => db.one(`INSERT INTO customer(cname, caddress, cgstid)
+  VALUES($1, $2, $3)
+  RETURNING cid`,
+  [c.cname, c.caddress, c.cgstid]
 )
 
 export async function get(customerid) {

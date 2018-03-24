@@ -1,7 +1,5 @@
 import { pgPromise, db } from './db'
 import converter from 'number-to-words'
-require("babel-core/register")
-require("babel-polyfill")
 
 export async function get(req, res) {
   console.log(req.params.from)

@@ -1,7 +1,7 @@
 import { pgPromise, db } from '../db'
 
 const invoiceGet = invoiceid => db.one('SELECT * FROM invoice WHERE iid = $1', [invoiceid])
-const invoicePut = (date, igst, storeid = 1, cid) = => db.one(`INSERT INTO invoice(dt, igst, storeid, customerid)
+const invoicePut = (date, igst, storeid = 1, cid) => db.one(`INSERT INTO invoice(dt, igst, storeid, customerid)
   VALUES($1, $2, $3, $4)
   RETURNING iid`,
   [date, igst, storeid, cid]
@@ -31,7 +31,7 @@ export async function put(date, igst, cid, storeid) {
   }
 }
 
-export asnc function del(invoiceid) {
+export async function del(invoiceid) {
   try {
     const invoice = await invoiceDel(invoiceid)
     console.log('Delete Invoice  -> ', invoice)

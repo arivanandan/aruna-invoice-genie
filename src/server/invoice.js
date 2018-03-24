@@ -1,10 +1,8 @@
 import { pgPromise, db } from './db'
 import converter from 'number-to-words'
-// require("babel-core/register")
-// require("babel-polyfill")
 
 import * as invoice from './database-communicators/invoice'
-import * as invoiceProduct from './invoice-product'
+import * as invoiceProduct from './database-communicators/invoice-product'
 import * as customer from './database-communicators/customer'
 import * as product from './database-communicators/product'
 
@@ -64,14 +62,32 @@ export async function put(req, res) {
     return { ...row, pid }
   }
 
-    const productIdGenerator = async data =>
-      await Promise.all(
-        data.map(row =>
-          row.pid === ''
-            ? productIdAdder(row)
-            : row
-        )
+  const productIdGenerator = async data =>
+    await Promise.all(
+      data.map(row =>
+        row.pid === ''
+          ? productIdAdder(row)
+          : row
       )
+    )
+
+  const columnSet = pgPromise().helpers.ColumnSet(
+    ['invoiceid', 'productid', 'price', 'quantity', 'usedgst'],
+    { table: 'invoiceproduct' }
+  )
+
+  const rowDataConstructor = (data, invoiceid) =>
+  data.map(row => Object.assign(
+    {},
+    { invoiceid, productid: row.pid, price: row.price, quantity: row.quantity, usedgst: row.gst }
+  ))
+
+  const invoiceDataInsert = (data, invoiceid) =>
+  db.any(
+    pgPromise().helpers.insert(
+      rowDataConstructor(data, invoiceid), columnSet
+    ) + 'RETURNING ipid'
+  )
 
   try {
     const customer = input.customer.cname === '' && input.customer.cgstid === ''
@@ -88,7 +104,7 @@ export async function put(req, res) {
     const verifiedData = await productIdGenerator(data)
     console.log('Modified Data', verifiedData)
 
-    const batchRowInsert = await invoiceProduct.put(verifiedData, iid)
+    const batchRowInsert = await invoiceDataInsert.put(verifiedData, iid)
     console.log('Invoice Products Populated', batchRowInsert)
 
     res.status(200).json({ iid })
@@ -135,7 +151,9 @@ export async function get(req, res) {
     console.log('Store Get -> ', sname, saddress, sgstid)
 
     let cname: null, caddress: null, cgstid: null, customerGetError, customer
-    if (customerid) { customer, error: customerGetError } = await customer.get(customerid)
+    if (customerid) {
+      const { customer, error: customerGetError } = await customer.get(customerid)
+    }
 
     const { bpriceTotal, cgstTotal, sgstTotal, igstTotal, total } = twoDecimal(calculateTotal(productList))
 

@@ -5,7 +5,7 @@ var CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: [
     "babel-polyfill",
-    "./src/ui/index.jsx"
+    "./src/ui/index.js"
     // the entry point of our app
   ],
 

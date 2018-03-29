@@ -127,7 +127,6 @@ class Report extends Component {
                           </div>
                         )}
                         {!rows[row].igst && <div />}
-
                         <div>
                           {(rows[row].gst[rate].total).toFixed(2)}
                         </div>

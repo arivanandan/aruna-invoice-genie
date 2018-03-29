@@ -14,6 +14,7 @@ CREATE TABLE customer(
 
 CREATE TABLE product(
   pid SERIAL PRIMARY KEY,
+  hsncode INT,
   name TEXT NOT NULL,
   mrp FLOAT NOT NULL,
   price FLOAT NOT NULL,

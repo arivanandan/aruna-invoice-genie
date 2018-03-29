@@ -61,7 +61,7 @@ export async function get(req, res) {
         return {
           ...invoice,
           cgstid,
-          dt: invoice.dt.toLocaleString().substring(0, 10).split('-').reverse().join('-'),
+          dt: invoice.dt.toLocaleString().split(' ')[0].split('-').reverse().map(n => n.trim().length === 1 ? `0${n.trim()}` : n.trim()).join('-'),
           gst
         }
       })

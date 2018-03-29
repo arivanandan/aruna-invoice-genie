@@ -117,7 +117,7 @@ export async function put(req, res, update) {
 
     const date = input.date === "" ? new Date() : input.date
 
-    const { invoice: invoiceData } = update === true
+    const { invoice: invoiceData } = (update === true && input.iid)
       ? await invoice.update(date, input.iid, input.igst, customer.cid, 1)
       : await invoice.put(date, input.igst, customer.cid, 1)
     const { iid } = invoiceData

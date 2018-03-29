@@ -22,6 +22,7 @@ export default {
     rows: [
       {
         pid: "",
+        hsncode: "",
         name: "",
         mrp: "",
         price: "",

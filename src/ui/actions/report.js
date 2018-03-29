@@ -29,6 +29,7 @@ export async function get(from, to) {
   console.log('Get Report for -> ', from, to)
   //from='2017-11-01'
   //to='2017-12-01'
+  console.log(`${server()}/api/report/${from}/${to}`)
   const res = await fetch(`${server()}/api/report/${from}/${to}`)
   const out = { rows: [], total: 0 }
   if (res.status === 200) {

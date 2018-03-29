@@ -2,19 +2,19 @@ import { pgPromise, db } from '../db'
 
 const putProduct = p =>
   db.one(
-    `INSERT INTO product(name, mrp, price, gst)
-    VALUES($1, $2, $3, $4)
+    `INSERT INTO product(name, hsncode, mrp, price, gst)
+    VALUES($1, $2, $3, $4, $5)
     RETURNING pid`,
-    [p.name, p.mrp, p.price, p.gst]
+    [p.name, p.hsncode, p.mrp, p.price, p.gst]
   )
 const getProducts = () => db.manyOrNone('SELECT * FROM product WHERE active = TRUE')
 const getProduct = productid => db.one('SELECT * FROM product WHERE pid = $1', [productid])
 const updateProduct = p => db.oneOrNone(
   `UPDATE product
-  SET name = $2, mrp = $3, price = $4, gst = $5
+  SET name = $2, hsncode = $3, mrp = $4, price = $5, gst = $6
   WHERE pid = $1
   RETURNING pid`,
-  [p.pid, p.name, p.mrp, p.price, p.gst]
+  [p.pid, p.name, p.hsncode, p.mrp, p.price, p.gst]
 )
 const deleteProduct = id => db.oneOrNone(
   `UPDATE product

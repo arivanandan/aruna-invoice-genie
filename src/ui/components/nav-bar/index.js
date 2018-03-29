@@ -3,7 +3,9 @@ import React, { Component } from "react";
 const NavBar = () => (
   <div className="navBar">
     <div>
-      <h2>Aruna Invoice Genie</h2>
+      <a href="/">
+        <h2>Aruna Invoice Genie</h2>
+      </a>
     </div>
     <div className="links">
       <a href="/">Create Invoice</a>

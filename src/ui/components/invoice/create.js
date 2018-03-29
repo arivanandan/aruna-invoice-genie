@@ -171,100 +171,111 @@ class Create extends Component {
           {
             <div className="inputHeaders">
               <div>Product Name</div>
+              <div>HSN Code</div>
               <div>MRP</div>
               <div>Selling Price</div>
               <div>Quantity</div>
               <div>GST</div>
             </div>
           }
-          {[...Array(this.props.input.rows.length).keys()].map(row => (
-            <div key={row}>
-              <div className="inputRow">
-                <input
-                  type="text"
-                  name="name"
-                  data-row={row}
-                  placeholder="Product"
-                  disabled={
-                    this.props.input.rows[row].pid === "" ? false : true
-                  }
-                  autoFocus
-                  value={this.props.input.rows[row].name}
-                  onChange={this.findProduct(
-                    row,
-                    this.props.input.rows[row].pid
-                  )}
-                  onKeyUp={this.handleKeyUp}
-                />
-                <input
-                  type="text"
-                  name="mrp"
-                  data-row={row}
-                  placeholder="MRP"
-                  value={this.props.input.rows[row].mrp}
-                  disabled={
-                    this.props.input.rows[row].pid === "" ? false : true
-                  }
-                  onChange={this.trackInput(row, "textbox")}
-                  onKeyUp={this.handleKeyUp}
-                />
-                <input
-                  type="text"
-                  name="price"
-                  data-row={row}
-                  placeholder="Selling Price"
-                  value={this.props.input.rows[row].price}
-                  onChange={this.trackInput(row, "textbox")}
-                  onKeyUp={this.handleKeyUp}
-                />
-                <input
-                  type="text"
-                  name="quantity"
-                  data-row={row}
-                  placeholder="Quantity"
-                  ref={input => {
-                    this.quantityInput = input;
-                  }}
-                  value={this.props.input.rows[row].quantity}
-                  onChange={this.trackInput(row, "textbox")}
-                  onKeyUp={this.handleKeyUp}
-                />
-                <input
-                  type="text"
-                  name="gst"
-                  data-row={row}
-                  placeholder="GST"
-                  value={this.props.input.rows[row].gst}
-                  disabled={
-                    this.props.input.rows[row].pid === "" ? false : true
-                  }
-                  onChange={this.trackInput(row, "textbox")}
-                  onKeyUp={this.handleKeyUp}
-                />
+          {[...Array(this.props.input.rows.length).keys()].map(row => {
+            const disabled = (
+              !this.props.match.params.id &&
+              this.props.input.rows[row].pid
+            )
+            return (
+              <div key={row}>
+                <div className="inputRow">
+                  <input
+                    type="text"
+                    name="name"
+                    data-row={row}
+                    placeholder="Product"
+                    disabled={disabled}
+                    autoFocus
+                    value={this.props.input.rows[row].name}
+                    onChange={this.findProduct(
+                      row,
+                      this.props.input.rows[row].pid
+                    )}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <input
+                    type="text"
+                    name="hsncode"
+                    data-row={row}
+                    placeholder="HSN Code"
+                    value={this.props.input.rows[row].hsncode}
+                    disabled={disabled}
+                    onChange={this.trackInput(row, "textbox")}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <input
+                    type="text"
+                    name="mrp"
+                    data-row={row}
+                    placeholder="MRP"
+                    value={this.props.input.rows[row].mrp}
+                    disabled={disabled}
+                    onChange={this.trackInput(row, "textbox")}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <input
+                    type="text"
+                    name="price"
+                    data-row={row}
+                    placeholder="Selling Price"
+                    value={this.props.input.rows[row].price}
+                    onChange={this.trackInput(row, "textbox")}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <input
+                    type="text"
+                    name="quantity"
+                    data-row={row}
+                    placeholder="Quantity"
+                    ref={input => {
+                      this.quantityInput = input;
+                    }}
+                    value={this.props.input.rows[row].quantity}
+                    onChange={this.trackInput(row, "textbox")}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                  <input
+                    type="text"
+                    name="gst"
+                    data-row={row}
+                    placeholder="GST"
+                    value={this.props.input.rows[row].gst}
+                    disabled={disabled}
+                    onChange={this.trackInput(row, "textbox")}
+                    onKeyUp={this.handleKeyUp}
+                  />
+                </div>
+                <div>
+                  {this.props.productMatches &&
+                    this.props.currentActive == row &&
+                    this.props.productMatches.map((match, matchIndex) => (
+                      <div
+                        className={
+                          this.props.highlightProductMatch === matchIndex
+                            ? "matchRow highlightProductMatch"
+                            : "matchRow"
+                        }
+                        data-row={row}
+                        onClick={() => this.selectProduct(row, match)}
+                      >
+                        <div>{match.name}</div>
+                        <div>{match.mrp}</div>
+                        <div>{match.price}</div>
+                        <div>{null}</div>
+                        <div>{match.gst}</div>
+                      </div>
+                    ))}
+                </div>
               </div>
-              <div>
-                {this.props.productMatches &&
-                  this.props.currentActive == row &&
-                  this.props.productMatches.map((match, matchIndex) => (
-                    <div
-                      className={
-                        this.props.highlightProductMatch === matchIndex
-                          ? "matchRow highlightProductMatch"
-                          : "matchRow"
-                      }
-                      data-row={row}
-                      onClick={() => this.selectProduct(row, match)}
-                    >
-                      <div>{match.name}</div>
-                      <div>{match.mrp}</div>
-                      <div>{match.price}</div>
-                      <div>{null}</div>
-                      <div>{match.gst}</div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
         <div className="createToolkit">
           <div>
